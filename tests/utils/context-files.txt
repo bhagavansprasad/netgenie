@@ -1,0 +1,4 @@
+app/routers/ifaceconfig.py
+app/ai/ai-interface.py
+app/ai/common.py
+app/core/settings.py

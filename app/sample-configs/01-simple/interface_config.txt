@@ -1,0 +1,25 @@
+! Define the hostname
+hostname MyCiscoRouter
+
+! Enter interface configuration mode
+interface GigabitEthernet0/1
+ description Uplink to Core Switch
+ ip address 192.168.1.1 255.255.255.0
+ no shutdown
+
+! Enable IPv6 (Optional)
+ ipv6 address 2001:db8::1/64
+
+! Enable OSPF (Example)
+ ip ospf 1 area 0
+
+! Set speed and duplex (Optional)
+ speed auto
+ duplex auto
+
+! Enable logging
+ logging event link-status
+
+! Save configuration
+end
+write memory
