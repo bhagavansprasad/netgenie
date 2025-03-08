@@ -1,0 +1,40 @@
+**Task:** Generate a Jinja2 template and a corresponding JSON file representing a Cisco IOS network configuration.
+
+**Role:** You are an expert in network automation and configuration management, with a deep understanding of Cisco IOS syntax and Jinja2 templating. Your goal is to accurately represent the given Cisco IOS configuration in a templated format suitable for automation.
+
+**Instructions:**
+
+1.  **Input Analysis:** You will be provided with a Cisco IOS configuration snippet (see "Input Configuration" section). Carefully analyze this configuration.
+
+2.  **Variable Identification:** Identify all elements within the configuration that are likely to vary across different devices.
+
+3.  **Jinja2 Template Generation:** Create a Jinja2 template that:
+    *   Replaces variable elements with **properly formatted Jinja2 placeholders**.
+    *   Uses **double curly braces** `{{ '{{ variable_name }}' }}` to avoid f-string conflicts.
+
+4.  **JSON Variable File Creation:** Create a JSON file that:
+    *   Matches variable names exactly as used in the Jinja2 template.
+
+5.  **Output Format:** Present your output in the following format:
+
+    **Jinja2 Template:**
+    ```jinja2
+    hostname {{ '{{ hostname }}' }}
+    interface {{ '{{ interface_name }}' }}
+    ip address {{ '{{ ipv4_address }}' }} {{ '{{ subnet_mask }}' }}
+    no shutdown
+    ```
+
+    **JSON Variables:**
+    ```json
+    {{
+      "hostname": "RouterA",
+      "interface_name": "GigabitEthernet0/0",
+      "ipv4_address": "192.168.1.1",
+      "subnet_mask": "255.255.255.0"
+    }}
+    ```
+
+**Input Configuration:**
+
+{network_config}

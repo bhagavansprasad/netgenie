@@ -1,0 +1,14 @@
+{
+    "hostname": "MyCiscoRouter",
+    "interface_name": "GigabitEthernet0/1",
+    "description": "Uplink to Core Switch",
+    "ip_address": "192.168.1.1",
+    "subnet_mask": "255.255.255.0",
+    "ipv6_address": "2001:db8::1/64",
+    "ospf_enabled": true,
+    "ospf_process_id": 1,
+    "ospf_area": 0,
+    "speed": "auto",
+    "duplex": "auto"
+  }
+  

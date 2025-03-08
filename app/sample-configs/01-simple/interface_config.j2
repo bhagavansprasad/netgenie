@@ -1,0 +1,21 @@
+hostname {{ hostname }}
+
+interface {{ interface_name }}
+ description {{ description }}
+ ip address {{ ip_address }} {{ subnet_mask }}
+{% if ipv6_address %}
+ ipv6 address {{ ipv6_address }}
+{% endif %}
+ no shutdown
+
+{% if ospf_enabled %}
+ ip ospf {{ ospf_process_id }} area {{ ospf_area }}
+{% endif %}
+
+ speed {{ speed }}
+ duplex {{ duplex }}
+
+ logging event link-status
+
+end
+write memory
