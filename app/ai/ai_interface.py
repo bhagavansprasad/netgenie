@@ -25,8 +25,8 @@ def config_to_j2_n_json(config: str, prompt_file_path: str = None) -> dict:
     Returns:
         A dictionary containing the Jinja2 template and JSON variables, or an error message.
     """
-    logger.debug("Entering config_to_j2_n_json")
-    logger.debug("Prompt File Path: %s", prompt_file_path)
+    logger.debug(f"Entering config_to_j2_n_json")
+    logger.debug(f"Prompt File Path: {prompt_file_path}")
 
     try:
         prompt_file = prompt_file_path or settings.CONFIG_TO_J2_PROMPT
@@ -36,13 +36,13 @@ def config_to_j2_n_json(config: str, prompt_file_path: str = None) -> dict:
             prompt_template = f.read()
 
         prompt = prompt_template.format(network_config=config)
-        
+
         # 3. Call the LLM API
         result = common.call_llm_chat(prompt) # call llm
 
         # Check if the AI service returned an error
         if "error" in result:
-            logger.error("LLM Error: %s", result["error"])
+            logger.error(f"LLM Error: {result['error']}")
             return result
 
         return result
@@ -69,24 +69,24 @@ def generate_config_from_j2_and_json(j2_template: str, json_data: dict, prompt_f
     Returns:
         A dictionary containing the rendered Cisco IOS configuration, or an error message.
     """
-    logger.info("Entering generate_config_from_j2_and_json")
-    logger.info(f"Jinja2 Template:\n{j2_template}")
-    logger.info(f"JSON Data:\n{json.dumps(json_data, indent=4)}")
-    logger.info(f"Prompt File Path: {prompt_file_path}")  # Log prompt file path
+    logger.debug(f"Entering generate_config_from_j2_and_json")
+    logger.debug(f"Jinja2 Template:\n{j2_template}")
+    logger.debug(f"JSON Data:\n{json.dumps(json_data, indent=4)}")
+    logger.debug(f"Prompt File Path: {prompt_file_path}")  # Log prompt file path
 
     try:
         # 1. Determine the prompt file path
         prompt_file = prompt_file_path or settings.J2_TO_CONFIG_PROMPT
-        logger.info(f"Using prompt file: {prompt_file}")
+        logger.debug(f"Using prompt file: {prompt_file}")
 
         # 2. Read the prompt template from the file
         with open(prompt_file, "r") as f:
             prompt_template = f.read()
-        logger.info(f"Prompt Template:\n{prompt_template}")
+        logger.debug(f"Prompt Template:\n{prompt_template}")
 
         # 3. Construct the prompt for j2-to-config
         prompt = prompt_template.format(j2_template=j2_template, json_data=json.dumps(json_data))
-        logger.info(f"Generated Prompt:\n{prompt}")
+        logger.debug(f"Generated Prompt:\n{prompt}")
 
         # 4. Call the LLM to generate the configuration
         result = common.call_llm_chat(prompt)
@@ -107,7 +107,7 @@ def generate_config_from_j2_and_json(j2_template: str, json_data: dict, prompt_f
         generated_config = config_match.group(1).strip()
 
         # Log results
-        logger.info(f"Returning Generated Config:\n{generated_config}")
+        logger.debug(f"Returning Generated Config:\n{generated_config}")
         # 7. Return the rendered configuration
         return {"rendered_config": generated_config}
 

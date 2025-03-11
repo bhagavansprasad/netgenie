@@ -35,8 +35,8 @@ def _parse_llm_output(llm_output: str) -> list:
         A dictionary containing the extracted Jinja2 template and JSON variables,
         or an error message if parsing fails.
     """
-    logger.debug("Entering _parse_llm_output")
-    logger.debug("LLM Output: %s", llm_output)
+    logger.debug(f"Entering _parse_llm_output")
+    logger.debug(f"LLM Output: {llm_output}")
 
     template_match = re.search(r"```jinja2\n(.*?)\n```", llm_output, re.DOTALL)
     json_match = re.search(r"```json\n(.*?)\n```", llm_output, re.DOTALL)
@@ -57,7 +57,7 @@ def _parse_llm_output(llm_output: str) -> list:
         error_message = f"Error decoding JSON: {e}\nLLM Output: {llm_output}"
         logger.error(error_message)
         return {"error": error_message}
-        
+
 def call_llm_chat(prompt_text: str) -> dict:
     """
     Sends a prompt to the Gemini model's chat interface and returns the response.
@@ -68,7 +68,7 @@ def call_llm_chat(prompt_text: str) -> dict:
     Returns:
         A dictionary containing the extracted details, or an error message.
     """
-    logger.debug("Entering call_llm_chat")
+    logger.debug(f"Entering call_llm_chat")
     logger.debug(f"Prompt Text: {prompt_text}")
 
     try:
@@ -89,7 +89,7 @@ def call_llm_chat(prompt_text: str) -> dict:
 
         # basic cleaning: Remove leading/trailing whitespaces
         llm_output = llm_output.strip()
-        # logger.info(f"LLM Output: {llm_output}")
+        # logger.info(f"LLM Output: {llm_output}") # No need to change info to debug, assuming info is intentional log level
 
         if not llm_output:
             error_message = "The LLM returned an empty response."
@@ -102,35 +102,49 @@ def call_llm_chat(prompt_text: str) -> dict:
             return extracted_data  # Return the error directly
 
         return extracted_data
-    
+
     except Exception as e:
         error_message = f"Error processing prompt: {e}"
         logger.exception(error_message)
         return {"error": error_message}
     finally:
-        logger.debug("Exiting call_llm_chat")
+        logger.debug(f"Exiting call_llm_chat")
 
 def get_config_content(self, file_path: str) -> str:
     """
     Reads the content from file path and returns as string
     """
+    logger.debug(f"Entering get_config_content")
+    logger.debug(f"File Path: {file_path}")
     try:
         with open(file_path, "r") as f:
-            return f.read()
+            content = f.read()
+            logger.debug(f"File Content Loaded from {file_path}")
+            return content
     except Exception as e:
-        logger.error(f"Value cannot be loaded {e}")
+        error_message = f"Value cannot be loaded from {file_path}: {e}"
+        logger.error(error_message)
         return ""
-    
+    finally:
+        logger.debug(f"Exiting get_config_content")
+
 def _render_jinja2_template(j2_template: str, json_data: dict) -> str:
     """Renders a Jinja2 template with the provided JSON data."""
+    logger.debug(f"Entering _render_jinja2_template")
+    logger.debug(f"Jinja2 Template:\n{j2_template}")
+    logger.debug(f"JSON Data:\n{json.dumps(json_data, indent=4)}")
     try:
         template = jinja2.Template(j2_template)
         rendered_config = template.render(json_data)  # Pass JSON data directly
 
         # Remove any leading or trailing whitespaces
-        return rendered_config.strip()
+        rendered_config_stripped = rendered_config.strip()
+        logger.debug(f"Rendered Config (stripped):\n{rendered_config_stripped}")
+        return rendered_config_stripped
 
     except jinja2.exceptions.TemplateError as e:
         error_message = f"Error rendering Jinja2 template: {e}"
         logger.error(error_message)
         raise ValueError(error_message)  # Re-raise as ValueError
+    finally:
+        logger.debug(f"Exiting _render_jinja2_template")

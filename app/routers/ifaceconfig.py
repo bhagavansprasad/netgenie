@@ -28,8 +28,8 @@ async def config_to_template(
             logger.error(f"AI Service Error: {result['error']}")
             raise HTTPException(status_code=500, detail=result["error"])
 
-        logger.debug("Jinja2 Template:\n", result.get("jinja2_template")) # print the values
-        logger.debug("JSON Variables:\n", result.get("json_variables")) # print the values
+        logger.debug(f"Jinja2 Template:\n{result.get('jinja2_template')}") # print the values
+        logger.debug(f"JSON Variables:\n{result.get('json_variables')}") # print the values
         return result  # Return the result dictionary directly
 
     except Exception as e:
@@ -50,6 +50,8 @@ async def generate_config(
     """
     j2_template = j2_template
     json_data = json_data
+    logger.debug(f"Received Jinja2 Template:\n{j2_template}")
+    logger.debug(f"Received JSON Data:\n{json_data}")
 
 
     prompt_file_path = "app/ai/prompts/j2-to-config.prompt"
@@ -67,4 +69,5 @@ async def generate_config(
 
     except Exception as e:
         logger.exception(f"An unexpected error occurred: {e}")
-        raise HTTPException(status_code=500, detail=str(e))    
+        raise HTTPException(status_code=500, detail=str(e))
+    
