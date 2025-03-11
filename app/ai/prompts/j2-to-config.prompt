@@ -20,17 +20,13 @@ You are an expert in network automation and configuration management with deep k
 
 ### **Input Data:**  
 #### **Jinja2 Template:**  
-```jinja2
+
 {{ j2_template }}
-```
+
 
 #### **JSON Variables:**  
-```json
 {{ json_data }}
-```
 
 ### **Expected Output Format:**  
 #### **Rendered Cisco IOS Configuration:**  
-```cisco
 {{ GENERATED_CISCO_IOS_CONFIGURATION }}
-```

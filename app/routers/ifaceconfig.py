@@ -37,29 +37,26 @@ async def config_to_template(
         raise HTTPException(status_code=500, detail=str(e))
 
 # @router.post("/generate_config")
-# async def generate_config(
-#     config_data: ConfigModel,
+# async def template_to_config(
+#     j2_template: str = Query(..., title="Jinja2 Template", description="Enter your Jinja2 template"),
+#     json_data: str = Query(..., title="JSON Data", description="Enter JSON values for the template")
 # ) -> dict:
 @router.post("/generate_config")
-async def generate_config(
-    j2_template: str = Query(..., title="Jinja2 Template", description="Enter your Jinja2 template"),
-    json_data: str = Query(..., title="JSON Data", description="Enter JSON values for the template")
+async def template_to_config(
+    config_data: ConfigModel = Body(..., title="Configuration Data", description="Jinja2 template and JSON data")
 ) -> dict:
     """
     Generates a Cisco IOS configuration from a Jinja2 template and JSON variables.
     """
-    j2_template = j2_template
-    json_data = json_data
-    logger.debug(f"Received Jinja2 Template:\n{j2_template}")
-    logger.debug(f"Received JSON Data:\n{json_data}")
-
+    j2_template = config_data.j2_template
+    json_data = config_data.json_data
 
     prompt_file_path = "app/ai/prompts/j2-to-config.prompt"
+    
     try:
-        result = ai_interface.generate_config_from_j2_and_json(
+        result = ai_interface.j2_and_json_to_config(
             j2_template, json_data, prompt_file_path
         )
-        logger.debug(f"AI Service Result:\n{result}")
 
         if "error" in result:
             logger.error(f"AI Service Error: {result['error']}")
@@ -69,5 +66,4 @@ async def generate_config(
 
     except Exception as e:
         logger.exception(f"An unexpected error occurred: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-    
+        raise HTTPException(status_code=500, detail=str(e))    

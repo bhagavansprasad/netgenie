@@ -24,7 +24,7 @@ class VertexAIConnector:  # Simple connector to get model object
         self.model = GenerativeModel(model_name)
 
 
-def _parse_llm_output(llm_output: str) -> list:
+def parse_gentemplate_output(llm_output: str) -> list:
     """
     Parses the LLM output to extract the Jinja2 template and JSON variables.
 
@@ -56,8 +56,35 @@ def _parse_llm_output(llm_output: str) -> list:
     except json.JSONDecodeError as e:
         error_message = f"Error decoding JSON: {e}\nLLM Output: {llm_output}"
         logger.error(error_message)
-        return {"error": error_message}
+    
+    return {"error": error_message}
 
+def parse_genconfig_output(llm_output: str) -> dict:
+    """
+    Parses the LLM output to extract the rendered Cisco IOS configuration,
+    specifically removing generic code blocks delimited by ```.
+
+    Args:
+        llm_output: The raw text output from the LLM.
+
+    Returns:
+        A dictionary containing the rendered Cisco IOS configuration,
+        or an error message if parsing fails.
+    """
+    logger.debug(f"Entering parse_genconfig_output")
+
+    try:
+        llm_output = llm_output.strip()
+        llm_output = llm_output[3:-3].strip()
+        
+        return llm_output
+
+    except Exception as e:
+        error_message = f"Error processing LLM output: {e}"
+        logger.error(error_message)
+        return {"error": error_message}
+    
+    
 def call_llm_chat(prompt_text: str) -> dict:
     """
     Sends a prompt to the Gemini model's chat interface and returns the response.
@@ -69,7 +96,6 @@ def call_llm_chat(prompt_text: str) -> dict:
         A dictionary containing the extracted details, or an error message.
     """
     logger.debug(f"Entering call_llm_chat")
-    logger.debug(f"Prompt Text: {prompt_text}")
 
     try:
         aiplatform.init(project=settings.PROJECT_ID, location=settings.LOCATION)
@@ -82,27 +108,15 @@ def call_llm_chat(prompt_text: str) -> dict:
 
         llm_output = response.text.strip()
 
-        if not llm_output:
-            error_message = "The LLM returned an empty response."
-            logger.warning(error_message)
-            return {"error": error_message}
-
-        # basic cleaning: Remove leading/trailing whitespaces
         llm_output = llm_output.strip()
-        # logger.info(f"LLM Output: {llm_output}") # No need to change info to debug, assuming info is intentional log level
 
         if not llm_output:
             error_message = "The LLM returned an empty response."
             logger.warning(error_message)
             return {"error": error_message}
 
-        extracted_data = _parse_llm_output(llm_output) # parsing to a different module
-
-        if "error" in extracted_data:
-            return extracted_data  # Return the error directly
-
-        return extracted_data
-
+        return llm_output
+    
     except Exception as e:
         error_message = f"Error processing prompt: {e}"
         logger.exception(error_message)
