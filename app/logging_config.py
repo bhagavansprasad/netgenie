@@ -13,7 +13,7 @@ def configure_logging():
         },
         'handlers': {
             'default': {
-                'level': 'INFO',
+                'level': 'DEBUG',
                 'formatter': 'standard',
                 'class': 'logging.StreamHandler',
                 'stream': 'ext://sys.stdout',  # Default is stderr
@@ -22,22 +22,22 @@ def configure_logging():
         'loggers': {
             '': {  # root logger
                 'handlers': ['default'],
-                'level': 'INFO',
+                'level': 'DEBUG',
                 'propagate': True
             },
             'app.routers.ifaceconfig': {
                 'handlers': ['default'],
-                'level': 'INFO',
+                'level': 'DEBUG',
                 'propagate': False
             },
             'app.ai.ai_interface': {
                 'handlers': ['default'],
-                'level': 'INFO',
+                'level': 'DEBUG',
                 'propagate': False
             },
             'app.ai.common': {  
                 'handlers': ['default'],
-                'level': 'INFO',
+                'level': 'DEBUG',
                 'propagate': False
             },
         }
