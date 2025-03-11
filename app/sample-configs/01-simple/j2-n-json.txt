@@ -1,0 +1,16 @@
+{
+  "j2_template": "hostname {{ hostname }}\n\ninterface {{ interface_name }}\n description {{ description }}\n ip address {{ ip_address }} {{ subnet_mask }}\n{% if ipv6_address %}\n ipv6 address {{ ipv6_address }}\n{% endif %}\n no shutdown\n\n{% if ospf_enabled %}\n ip ospf {{ ospf_process_id }} area {{ ospf_area }}\n{% endif %}\n\n speed {{ speed }}\n duplex {{ duplex }}\n\n logging event link-status\n\nend\nwrite memory",
+  "json_data": {
+    "hostname": "MyCiscoRouter",
+    "interface_name": "GigabitEthernet0/1",
+    "description": "Uplink to Core Switch",
+    "ip_address": "192.168.1.1",
+    "subnet_mask": "255.255.255.0",
+    "ipv6_address": "2001:db8::1/64",
+    "ospf_enabled": true,
+    "ospf_process_id": 1,
+    "ospf_area": 0,
+    "speed": "auto",
+    "duplex": "auto"
+  }
+}
