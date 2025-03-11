@@ -1,4 +1,6 @@
 app/routers/ifaceconfig.py
-app/ai/ai-interface.py
+app/ai/ai_interface.py
 app/ai/common.py
 app/core/settings.py
+app/ai/prompts/j2-to-config.prompt
+app/ai/prompts/config-2-j2.prompt
