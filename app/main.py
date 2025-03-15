@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.routers import ifaceconfig, user, network
+from app.routers import ifaceconfig
 from app import logging_config  # Import the logging configuration
 
 app = FastAPI()
@@ -8,5 +8,3 @@ app = FastAPI()
 logging_config.configure_logging()
 
 app.include_router(ifaceconfig.router)
-# app.include_router(user.router)
-# app.include_router(network.router)

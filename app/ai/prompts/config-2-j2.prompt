@@ -10,7 +10,7 @@
 
 3.  **Jinja2 Template Generation:** Create a Jinja2 template that:
     *   Replaces variable elements with **properly formatted Jinja2 placeholders**.
-    *   Uses **double curly braces** `{{ '{{ variable_name }}' }}` to avoid f-string conflicts.
+    *   Uses **double curly braces** `{{ variable_name }}` to avoid f-string conflicts.
 
 4.  **JSON Variable File Creation:** Create a JSON file that:
     *   Matches variable names exactly as used in the Jinja2 template.
@@ -19,9 +19,9 @@
 
     **Jinja2 Template:**
     ```jinja2
-    hostname {{ '{{ hostname }}' }}
-    interface {{ '{{ interface_name }}' }}
-    ip address {{ '{{ ipv4_address }}' }} {{ '{{ subnet_mask }}' }}
+    hostname {{ hostname }}
+    interface {{ interface_name }}
+    ip address {{ ipv4_address }} {{ subnet_mask }}
     no shutdown
     ```
 

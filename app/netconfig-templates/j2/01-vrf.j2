@@ -1,0 +1,11 @@
+vrf {{ vrf_name }}
+ description {{ vrf_description }}
+ address-family ipv4 unicast
+  route-target export {{ rt_export }}
+  route-target import {{ rt_import }}
+ !
+ address-family ipv6 unicast
+  route-target export {{ rt_export }}
+  route-target import {{ rt_import }}
+ !
+

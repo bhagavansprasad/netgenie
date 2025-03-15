@@ -1,0 +1,7 @@
+{
+    "vrf_name": "CUST101",
+    "vrf_description": "Customer 101 VRF",
+    "rt_export": "101:101",
+    "rt_import": "101:101"
+  }
+  
