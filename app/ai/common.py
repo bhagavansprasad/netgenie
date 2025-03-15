@@ -24,7 +24,7 @@ class VertexAIConnector:  # Simple connector to get model object
         self.model = GenerativeModel(model_name)
 
 
-def parse_gentemplate_output(llm_output: str) -> list:
+def parse_gentemplate_output(llm_output: str) -> dict:
     """
     Parses the LLM output to extract the Jinja2 template and JSON variables.
 
@@ -35,7 +35,7 @@ def parse_gentemplate_output(llm_output: str) -> list:
         A dictionary containing the extracted Jinja2 template and JSON variables,
         or an error message if parsing fails.
     """
-    logger.debug(f"Entering _parse_llm_output")
+    logger.debug(f"Entering parse_gentemplate_output")
     logger.debug(f"LLM Output: {llm_output}")
 
     template_match = re.search(r"```jinja2\n(.*?)\n```", llm_output, re.DOTALL)
@@ -49,9 +49,13 @@ def parse_gentemplate_output(llm_output: str) -> list:
     jinja2_template = template_match.group(1).strip()
     json_string = json_match.group(1).strip()
 
+    logger.debug(f"Extracted jinja2_template: {jinja2_template}")
+    logger.debug(f"Extracted json_string: {json_string}")
+
+
     try:
         json_variables = json.loads(json_string)
-        # logger.debug(f"Extracted details: {json.dumps(json_variables, sort_keys=True, indent=4)}")  # Use json.dumps for pretty logging
+        logger.debug(f"Extracted json_variables: {json.dumps(json_variables, sort_keys=True, indent=4)}")  # Use json.dumps for pretty logging
         return {"jinja2_template": jinja2_template, "json_variables": json_variables}
     except json.JSONDecodeError as e:
         error_message = f"Error decoding JSON: {e}\nLLM Output: {llm_output}"
@@ -72,10 +76,14 @@ def parse_genconfig_output(llm_output: str) -> dict:
         or an error message if parsing fails.
     """
     logger.debug(f"Entering parse_genconfig_output")
+    logger.debug(f"LLM Output: {llm_output}")
+
 
     try:
         llm_output = llm_output.strip()
         llm_output = llm_output[3:-3].strip()
+
+        logger.debug(f"Parsed LLM output: {llm_output}")
         
         return llm_output
 
@@ -96,6 +104,7 @@ def call_llm_chat(prompt_text: str) -> dict:
         A dictionary containing the extracted details, or an error message.
     """
     logger.debug(f"Entering call_llm_chat")
+    logger.debug(f"Prompt Text: {prompt_text}")
 
     try:
         aiplatform.init(project=settings.PROJECT_ID, location=settings.LOCATION)
@@ -109,6 +118,8 @@ def call_llm_chat(prompt_text: str) -> dict:
         llm_output = response.text.strip()
 
         llm_output = llm_output.strip()
+
+        logger.debug(f"Raw LLM Output: {llm_output}")
 
         if not llm_output:
             error_message = "The LLM returned an empty response."

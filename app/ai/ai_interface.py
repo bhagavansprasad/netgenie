@@ -1,5 +1,4 @@
 # app/ai/ai-interface.py
-
 import os
 import logging
 import json
@@ -28,18 +27,30 @@ def config_to_j2_n_json(config: str, prompt_file_path: str = None) -> dict:
     """
     logger.debug(f"Entering config_to_j2_n_json")
     logger.debug(f"Prompt File Path: {prompt_file_path}")
+    logger.debug(f"Input config: {config}")
+
 
     try:
         prompt_file = prompt_file_path or settings.CONFIG_TO_J2_PROMPT
+        logger.debug(f"Using prompt file: {prompt_file}")
 
         with open(prompt_file, "r") as f:
             prompt_template = f.read()
+        logger.debug(f"Prompt template read successfully from {prompt_file}")
+
 
         prompt = prompt_template.format(network_config=config)
+        logger.debug(f"Prompt after formatting: {prompt}")
+
 
         llm_output = common.call_llm_chat(prompt)
+        logger.debug(f"LLM Output: {llm_output}")
+
+        print(llm_output)
         
         extracted_data = parse_gentemplate_output(llm_output)
+        logger.debug(f"Extracted data after parsing: {extracted_data}")
+
 
         if "error" in extracted_data:
             logger.error(f"LLM Error: {extracted_data['error']}")
@@ -63,19 +74,34 @@ def j2_and_json_to_config(j2_template: str, json_data: dict, prompt_file_path: s
     using a prompt template and an LLM. The template rendering is performed by the LLM.
     """
     logger.info(f"Entering j2_and_json_to_config")
+    logger.debug(f"j2_template: {j2_template}")
+    logger.debug(f"json_data: {json_data}")
+    logger.debug(f"prompt_file_path: {prompt_file_path}")
+
 
     try:
         prompt_file = prompt_file_path or settings.J2_TO_CONFIG_PROMPT
+        logger.debug(f"Using prompt file: {prompt_file}")
+
 
         with open(prompt_file, "r") as f:
             prompt_template_string = f.read() # Read the prompt template as a string
+        logger.debug(f"Prompt template read successfully from {prompt_file}")
+
 
         env = jinja2.Environment()
         prompt_template = env.from_string(prompt_template_string)
         prompt = prompt_template.render(j2_template=j2_template, json_data=json_data) # Use Jinja2 render
+        logger.debug(f"Prompt after rendering: {prompt}")
+
 
         llm_output = common.call_llm_chat(prompt)
+        logger.debug(f"LLM Output: {llm_output}")
+
+
         extracted_data = parse_genconfig_output(llm_output)
+        logger.debug(f"Extracted data after parsing: {extracted_data}")
+
 
         if "error" in extracted_data:
             logger.error(f"LLM output Error: {extracted_data}")
