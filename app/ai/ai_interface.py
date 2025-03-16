@@ -25,7 +25,7 @@ def config_to_j2_n_json(config: str, prompt_file_path: str = None) -> dict:
     Returns:
         A dictionary containing the Jinja2 template and JSON variables, or an error message.
     """
-    logger.debug(f"Entering config_to_j2_n_json")
+    logger.info(f"Entering config_to_j2_n_json")
     logger.debug(f"Prompt File Path: {prompt_file_path}")
     logger.debug(f"Input config: {config}")
 
@@ -66,6 +66,8 @@ def config_to_j2_n_json(config: str, prompt_file_path: str = None) -> dict:
         error_message = f"An unexpected error occurred: {e}"
         logger.exception(error_message)
         return {"error": error_message}
+    finally:
+        logger.info("Exiting config_to_j2_n_json")
 
 
 def j2_and_json_to_config(j2_template: str, json_data: dict, prompt_file_path: str = None) -> dict:
@@ -107,6 +109,8 @@ def j2_and_json_to_config(j2_template: str, json_data: dict, prompt_file_path: s
             logger.error(f"LLM output Error: {extracted_data}")
             return extracted_data
 
+        if 'message' in extracted_data and 'config' in extracted_data['message']:
+            logger.info(f"Generated config length: {len(extracted_data['message']['config'])}")
         return {"message": extracted_data}
 
     except FileNotFoundError:
@@ -118,3 +122,5 @@ def j2_and_json_to_config(j2_template: str, json_data: dict, prompt_file_path: s
         error_message = f"An unexpected error occurred: {e}"
         logger.exception(error_message)
         return {"error": error_message}
+    finally:
+        logger.info("Exiting j2_and_json_to_config")

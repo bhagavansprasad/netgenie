@@ -1,8 +1,6 @@
 # app/routers/ifaceconfig.py
 
-from fastapi import APIRouter, Body, HTTPException, Query
-from pydantic import BaseModel
-from typing import Dict, Optional
+from fastapi import APIRouter, Body, HTTPException
 from app.ai import ai_interface
 from app.models.config_model import ConfigModel
 
@@ -22,7 +20,7 @@ async def config_to_template(
     Endpoint to convert a network configuration to a Jinja2 template and JSON variables.
     """
     logger.info("Entering /config endpoint")
-    logger.debug(f"Received Configuration:\n{config}")
+    logger.debug(f"Received Configuration: {config}") # Log input config
     prompt_file_path = "app/ai/prompts/config-2-j2.prompt"  # Define the prompt file path
     logger.debug(f"Using prompt file: {prompt_file_path}")
 
@@ -46,11 +44,6 @@ async def config_to_template(
     finally:
         logger.info("Exiting /config endpoint")
 
-# @router.post("/generate_config")
-# async def template_to_config(
-#     j2_template: str = Query(..., title="Jinja2 Template", description="Enter your Jinja2 template"),
-#     json_data: str = Query(..., title="JSON Data", description="Enter JSON values for the template")
-# ) -> dict:
 @router.post("/generate_config")
 async def template_to_config(
     config_data: ConfigModel = Body(..., title="Configuration Data", description="Jinja2 template and JSON data")
@@ -81,6 +74,8 @@ async def template_to_config(
             raise HTTPException(status_code=500, detail=result["error"])
 
         logger.info("Successfully generated configuration from template.")
+        if 'result' in result and 'config' in result:
+            logger.info(f"Generated config length: {len(result['config'])}")
         return result
 
     except Exception as e:
