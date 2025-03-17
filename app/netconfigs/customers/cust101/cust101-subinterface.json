@@ -1,0 +1,9 @@
+{
+    "interface_name": "GigabitEthernet0/0/0",
+    "subinterface_vlan": "101",
+    "description": "Sub-interface for Customer 101",
+    "vrf": "CUST101",
+    "ipv4_address": "192.168.101.1",
+    "subnet_mask": "255.255.255.0",
+    "ipv6_address": "2001:db8:101::1/64"
+}

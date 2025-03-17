@@ -1,0 +1,7 @@
+interface {{ interface_name }}.{{ subinterface_vlan }}
+description {{ description }}
+encapsulation dot1q {{ subinterface_vlan }}
+vrf {{ vrf }}
+ipv4 address {{ ipv4_address }} {{ subnet_mask }}
+ipv6 address {{ ipv6_address }}
+no shutdown

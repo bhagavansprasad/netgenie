@@ -1,0 +1,38 @@
+{
+    "vrf_data": {
+      "vrf_name": "CUST101",
+      "vrf_description": "Customer 101 VRF",
+      "rt_export": "101:101",
+      "rt_import": "101:101"
+      },
+      
+    "interface_data": {
+      "interface_name": "GigabitEthernet0/0/0/1",
+      "description": "Customer 101 Uplink",
+      "mtu": 9216
+      },
+      
+    "subinterface_data": {
+      "interface_name": "GigabitEthernet0/0/0",
+      "subinterface_vlan": "101",
+      "description": "Sub-interface for Customer 101",
+      "vrf": "CUST101",
+      "ipv4_address": "192.168.101.1",
+      "subnet_mask": "255.255.255.0",
+      "ipv6_address": "2001:db8:101::1/64"
+      },
+      
+    "global_bgp_data": {
+      "bgp_asn": "65001",
+      "router_id": "1.1.1.1",
+      "ipv4_network_1": "10.0.0.0/8",
+      "ipv4_network_2": "192.168.101.0/24",
+      "ipv6_network": "2001:db8:101::/64"
+      },
+      
+    "local_bgp_data": {    
+      "asn": "65001",
+      "vrf_name": "CUST101",
+      "rd": "101:101"
+      }
+}

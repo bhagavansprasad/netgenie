@@ -1,0 +1,9 @@
+router bgp {{ asn }}
+vrf {{ vrf_name }}
+rd {{ rd }}
+address-family ipv4 unicast
+redistribute connected
+!
+address-family ipv6 unicast
+redistribute connected
+!
