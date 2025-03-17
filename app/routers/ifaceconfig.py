@@ -1,9 +1,9 @@
 # app/routers/ifaceconfig.py
 
-from fastapi import APIRouter, Body, HTTPException
+from fastapi import APIRouter, Body, HTTPException, Query
 from app.ai import ai_interface
 from app.models.config_model import ConfigModel
-
+from typing import Dict, List
 import logging
 # from app.models import ConfigModel
 
@@ -83,3 +83,51 @@ async def template_to_config(
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         logger.info("Exiting /generate_config endpoint")
+
+@router.post("/generate_full_config")
+async def generate_full_config(
+    customer_name: str = Query(..., title="Customer Name", description="Name of the customer"),
+    vrf_data: Dict = Body(..., title="VRF Data", description="JSON data for VRF configuration"),
+    interface_data: Dict = Body(..., title="Interface Data", description="JSON data for interface configuration"),
+    subinterface_data: Dict = Body(..., title="Subinterface Data", description="JSON data for subinterface configuration"),
+    global_bgp_data: Dict = Body(..., title="Global BGP Data", description="JSON data for global BGP configuration"),
+    local_bgp_data: Dict = Body(..., title="Local BGP Data", description="JSON data for local BGP configuration"),
+) -> dict:
+    """
+    Endpoint to generate a complete Cisco IOS configuration from various JSON data inputs.
+    Now customer_name will be passed as Query Parameter
+    """
+    logger.info("Entering /generate_full_config endpoint")
+    logger.debug(f"Received customer_name: {customer_name}")
+    logger.debug(f"Received vrf_data: {vrf_data}")
+    logger.debug(f"Received interface_data: {interface_data}")
+    logger.debug(f"Received subinterface_data: {subinterface_data}")
+    logger.debug(f"Received global_bgp_data: {global_bgp_data}")
+    logger.debug(f"Received local_bgp_data: {local_bgp_data}")
+
+    try:
+        result = ai_interface.generate_complete_config(
+            customer_name=customer_name,
+            vrf_data=vrf_data,
+            interface_data=interface_data,
+            subinterface_data=subinterface_data,
+            global_bgp_data=global_bgp_data,
+            local_bgp_data=local_bgp_data,
+        )
+
+        logger.debug(f"AI Service Result:\n{result}")
+
+        if "error" in result:
+            logger.error(f"AI Service Error: {result['error']}")
+            raise HTTPException(status_code=500, detail=result["error"])
+
+        logger.info("Successfully generated full configuration.")
+        if 'config' in result:
+            logger.info(f"Generated full config length: {len(result['config'])}") # Log the total config length
+        return result
+
+    except Exception as e:
+        logger.exception(f"An unexpected error occurred: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        logger.info("Exiting /generate_full_config endpoint")

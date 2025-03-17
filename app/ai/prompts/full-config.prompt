@@ -1,0 +1,77 @@
+### **Task:**
+Generate a complete, static Cisco IOS configuration by rendering multiple Jinja2 templates with corresponding JSON variables and combining the results.
+
+### **Role:**
+You are an expert in network automation and configuration management, possessing in-depth knowledge of Jinja2 templating and Cisco IOS syntax. Your objective is to accurately render a static network configuration by applying JSON variables to the provided Jinja2 templates and combining the outputs into a single, cohesive configuration.
+
+### **Instructions:**
+
+1. **Input Analysis:**
+   - You will be provided with the following Jinja2 templates and JSON variables:
+     - **VRF Jinja2 Template:** Contains the template for VRF configuration.
+     - **VRF JSON Variables:** Contains the values for VRF configuration variables.
+     - **Interface Jinja2 Template:** Contains the template for interface configuration.
+     - **Interface JSON Variables:** Contains the values for interface configuration variables.
+     - **Sub-Interface Jinja2 Template:** Contains the template for sub-interface configuration.
+     - **Sub-Interface JSON Variables:** Contains the values for sub-interface configuration variables.
+     - **BGP Global Jinja2 Template:** Contains the template for global BGP configuration.
+     - **BGP Global JSON Variables:** Contains the values for global BGP configuration variables.
+     - **BGP Local Jinja2 Template:** Contains the template for local BGP configuration.
+     - **BGP Local JSON Variables:** Contains the values for local BGP configuration variables.
+
+2. **Template Rendering:**
+   - Render each Jinja2 template with its corresponding JSON variables.
+   - Ensure that all Jinja2 placeholders (`{{ variable_name }}`) in each template are replaced with the appropriate values from the corresponding JSON file.
+   - Handle optional sections (e.g., IPv6, OSPF, specific BGP features) based on their conditions within the templates and the values provided in the JSON data.
+
+3. **Configuration Combination:**
+   - Combine the rendered outputs of all templates in a logical order to create a complete Cisco IOS configuration.
+   - The recommended order is: VRF, Interface, Sub-Interface, BGP Global, BGP Local. However, use your best judgement based on the content of the templates.
+   - Ensure that the combined configuration is valid Cisco IOS syntax and adheres to best practices.
+
+4. **Output Format:**
+   - Present your output as a complete, static Cisco IOS configuration file.
+   - Ensure correct indentation and spacing as per Cisco IOS standards.
+   - Include any necessary global configuration commands (e.g., `router bgp <ASN>`) if they are not already included in the individual templates.
+   - Add a hostname to the device
+   - The hostname of the device is <<customer_name>>
+
+### **Input Data:**
+
+#### **Customer Name:**
+{customer_name}
+
+#### **VRF Jinja2 Template:**
+{vrf_j2_template}
+
+#### **VRF JSON Variables:**
+{vrf_json_data}
+
+#### **Interface Jinja2 Template:**
+{interface_j2_template}
+
+#### **Interface JSON Variables:**
+{interface_json_data}
+
+#### **Sub-Interface Jinja2 Template:**
+{sub_interface_j2_template}
+
+#### **Sub-Interface JSON Variables:**
+{sub_interface_json_data}
+
+#### **BGP Global Jinja2 Template:**
+{bgp_global_j2_template}
+
+#### **BGP Global JSON Variables:**
+{bgp_global_json_data}
+
+#### **BGP Local Jinja2 Template:**
+{bgp_local_j2_template}
+
+#### **BGP Local JSON Variables:**
+{bgp_local_json_data}
+
+### **Expected Output Format:**
+
+#### **Rendered Cisco IOS Configuration:**
+{{GENERATED_CISCO_IOS_CONFIGURATION}}
