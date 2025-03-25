@@ -44,34 +44,9 @@ async def on_startup_db_initialize_permissions():
             "role_id": 1,
             "method": "GET"
         },
-            {
-            "endpoint_name": "create_role",
-            "role_id": 1,
-            "method": "POST"
-        },
         {
-            "endpoint_name": "update_role",
+            "endpoint_name": "read_role",
             "role_id": 1,
-            "method": "PUT"
-        },
-        {
-            "endpoint_name": "delete_role",
-            "role_id": 1,
-            "method": "DELETE"
-        },
-            {
-            "endpoint_name": "list_customers",
-            "role_id": 1,
-            "method": "GET"
-        },
-        {
-            "endpoint_name": "list_customers",
-            "role_id": 2,
-            "method": "GET"
-        },
-        {
-            "endpoint_name": "list_customers",
-            "role_id": 3,
             "method": "GET"
         },
     ]

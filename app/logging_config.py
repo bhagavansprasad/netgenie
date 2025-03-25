@@ -34,6 +34,11 @@ def configure_logging():
                 'level': 'DEBUG',  # Enable DEBUG logs
                 'propagate': False
             },
+            'app.routers.role_router': {  
+                'handlers': ['default'],
+                'level': 'DEBUG', 
+                'propagate': False
+            },
         }
     }
     

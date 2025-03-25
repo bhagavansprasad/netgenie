@@ -13,11 +13,6 @@ import logging
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
-# JWT Settings (Move these to app/core/settings.py)
-SECRET_KEY = "YOUR_SECRET_KEY"  # IMPORTANT:  Change this to a strong, random string and store it securely!
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60  # 1 hour
-
 # Dependency to get the user from the database based on username
 async def get_user_by_username(username: str, db):
     user = await db["users"].find_one({"username": username})  # AWAIT HERE
@@ -30,7 +25,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     if expires_delta:
         expire = datetime.now() + expires_delta
     else:
-        expire = datetime.now() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        expire = datetime.now() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
     return encoded_jwt
@@ -64,7 +59,7 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     access_token_data = {
         "sub": user["username"],  # Subject (typically username or user ID)
         "role_id": user["role_id"],
-        "role_name": role["role"] # Added the role name in token
+        "role_name": role["name"] # Added the role name in token
     }
     access_token = create_access_token(access_token_data) #create the token
 
@@ -76,5 +71,5 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
         "email": user["email"],
         "access_token": access_token,
         "token_type": "bearer",
-        "role": {"id": user["role_id"], "name": role["role"]}
+        "role": {"id": user["role_id"], "name": role["name"]}
     }
