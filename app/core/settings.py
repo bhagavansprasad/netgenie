@@ -19,5 +19,5 @@ class Settings:
     # JWT settings
     SECRET_KEY = os.environ.get("SECRET_KEY", "Abcd!234")  # NEVER hardcode!
     ALGORITHM = os.environ.get("ALGORITHM", "HS256")
-        
+    ACCESS_TOKEN_EXPIRE_MINUTES = 60    
 settings = Settings() # Create instance of the setting

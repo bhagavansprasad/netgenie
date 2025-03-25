@@ -1,9 +1,14 @@
-from pydantic import BaseModel, constr
+from pydantic import BaseModel
 from typing import Optional
 
 class RoleCreate(BaseModel):
-    name: constr(min_length=3, max_length=50)  # Enforce name length
+    name: str
     description: str
+
+class RoleUpdate(BaseModel):
+    name: Optional[str] = None
+    description: Optional[str] = None
+
 
 class RoleResponse(BaseModel):
     id: str

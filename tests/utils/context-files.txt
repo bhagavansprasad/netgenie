@@ -10,6 +10,7 @@ app/routers/initialize_roles.py
 app/routers/initialize_users.py
 app/routers/user_router.py
 app/routers/auth_router.py
+app/routers/role_router.py
 app/models/user_model.py
 app/schemas/user_schemas.py
 app/logging_config.py
