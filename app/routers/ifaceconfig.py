@@ -5,7 +5,7 @@ from app.ai import ai_interface
 from app.models.config_model import ConfigModel
 from typing import Dict, List
 import logging
-# from app.models import ConfigModel
+from app.core.database import get_database
 
 router = APIRouter()
 
@@ -131,3 +131,13 @@ async def generate_full_config(
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         logger.info("Exiting /generate_full_config endpoint")
+
+
+@router.get("/customers")
+async def list_customers():
+    db = get_database()
+    customers = list(db["customers"].find())  # Get all customers as a list
+    # Convert ObjectId to string for JSON serialization
+    for customer in customers:
+        customer["_id"] = str(customer["_id"])
+    return customers
