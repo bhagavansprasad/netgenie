@@ -7,6 +7,7 @@ from pymongo import MongoClient
 from bson import ObjectId # not needed anymore since we are using sequential integer
 from app.schemas.user_schemas import UserResponse
 from pydantic import EmailStr
+from app.core.auth import check_permission
 
 router = APIRouter()
 
@@ -23,12 +24,13 @@ async def get_next_sequence(db, sequence_name: str):
     return result["seq"]
 
 async def get_user(user_id: int, db):
-    user = db["users"].find_one({"id": user_id}) # now we look for id
+    user = await db["users"].find_one({"id": user_id}) # now we look for id and await the result
     if user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
-@router.post("/users/", response_model=UserResponse, status_code=201)
+@router.post("/users/create", response_model=UserResponse, status_code=201,
+             name="create_user", dependencies=[Depends(check_permission)])
 async def create_user(
     username: str = Query(..., title="Username", description="The username for the new user"),
     password: str = Query(..., title="Password", description="The password for the new user"),
@@ -40,11 +42,11 @@ async def create_user(
     logger.info("Entering /users/ (POST) endpoint (query parameters)")
 
     # Check if username or email already exists
-    if db["users"].find_one({"username": username}):
+    if await db["users"].find_one({"username": username}):
         raise HTTPException(status_code=400, detail="Username already exists")
-    if db["users"].find_one({"email": email}):
+    if await db["users"].find_one({"email": email}):
         raise HTTPException(status_code=400, detail="Email already exists")
-
+    
     # Get the next sequence number
     user_id = await get_next_sequence(db, "user_id") # get the autoincrementing sequence
 
@@ -64,16 +66,18 @@ async def create_user(
     return UserResponse(id=new_user["id"], username=new_user["username"], role_id=new_user["role_id"], email=new_user["email"])
 
 
-@router.get("/users/", response_model=List[UserResponse])
+@router.get("/list_users", response_model=List[UserResponse], name="list_users",
+            dependencies=[Depends(check_permission)])
 async def list_users(db = Depends(get_database)):
     """List all users."""
-    logger.info("Entering /users/ (GET) endpoint")
+    logger.info("Entering /users (GET) endpoint")
     users = []
-    for user in db["users"].find():
+    async for user in db["users"].find():  # Changed to async for
         users.append(UserResponse(id=user["id"], username=user["username"], role_id=user["role_id"], email=user["email"])) # converting object id to string
     return users
 
-@router.get("/users/{user_id}", response_model=UserResponse)
+@router.get("/users/{user_id}", response_model=UserResponse, name="read_user", 
+            dependencies=[Depends(check_permission)])
 async def read_user(user_id: int, db = Depends(get_database)): # changed to int
     """Read a user by ID."""
     logger.info(f"Entering /users/{user_id} (GET) endpoint")
@@ -81,7 +85,8 @@ async def read_user(user_id: int, db = Depends(get_database)): # changed to int
     return UserResponse(id=user["id"], username=user["username"], role_id=user["role_id"], email=user["email"])
 
 
-@router.put("/users/{user_id}", response_model=UserResponse)
+@router.put("/users/{user_id}", response_model=UserResponse, name="update_user",
+            dependencies=[Depends(check_permission)])
 async def update_user(
     user_id: int, #changed to int
     username: Optional[str] = Query(None, title="Username", description="The username for the new user"),
@@ -97,7 +102,7 @@ async def update_user(
     if username is not None:
         user_data["username"] = username
     if password is not None:
-        user_data["password"] = password # VERY INSECURE - Storing plain text
+        user_data["password"] = password  # VERY INSECURE - Storing plain text
     if role_id is not None:
         user_data["role_id"] = role_id
     if email is not None:
@@ -106,12 +111,12 @@ async def update_user(
     if len(user_data) >= 1:
         # Check username and email duplication before updating
         existing_user = await get_user(user_id, db)
-        if username and username != existing_user['username'] and db["users"].find_one({"username": username}):
+        if username and username != existing_user['username'] and await db["users"].find_one({"username": username}):
             raise HTTPException(status_code=400, detail="Username already exists")
-        if email and email != existing_user['email'] and db["users"].find_one({"email": email}):
+        if email and email != existing_user['email'] and await db["users"].find_one({"email": email}):
             raise HTTPException(status_code=400, detail="Email already exists")
 
-        update_result = db["users"].update_one(
+        update_result = await db["users"].update_one(  # Await the update_one call
             {"id": user_id}, {"$set": user_data} # now we look for id
         )
 
@@ -122,11 +127,12 @@ async def update_user(
     return UserResponse(id=updated_user["id"], username=updated_user["username"], role_id=updated_user["role_id"], email=updated_user["email"])
 
 
-@router.delete("/users/{user_id}", status_code=204)
+@router.delete("/users/{user_id}", status_code=204, name="delete_user",
+               dependencies=[Depends(check_permission)])
 async def delete_user(user_id: int, db = Depends(get_database)): # change to int
     """Delete a user by ID."""
     logger.info(f"Entering /users/{user_id} (DELETE) endpoint")
-    delete_result = db["users"].delete_one({"id": user_id}) # change to id
+    delete_result = await db["users"].delete_one({"id": user_id}) # change to id and await the result
     if delete_result.deleted_count == 0:
         raise HTTPException(status_code=404, detail="User not found")
     return None
