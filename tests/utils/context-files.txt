@@ -2,3 +2,8 @@ app/routers/ifaceconfig.py
 app/ai/ai_interface.py
 app/ai/common.py
 app/core/settings.py
+app/routers/user_router.py
+app/models/user_model.py
+app/schemas/user_schemas.py
+app/core/security.py
+app/routers/auth_router.py
