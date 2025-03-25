@@ -19,9 +19,9 @@ async def initialize_roles(db):
         try:
             # Define roles to insert, including both _id and id
             roles = [
-                {"_id": 1, "id": 1, "role": "netarch", "description": "Network Architect"},
-                {"_id": 2, "id": 2, "role": "neteng", "description": "Network Engineer"},
-                {"_id": 3, "id": 3, "role": "admin", "description": "Administrator"}
+                {"_id": 1, "id": 1, "role": "admin", "description": "Administrator"},
+                {"_id": 2, "id": 2, "role": "netarch", "description": "Network Architect"},
+                {"_id": 3, "id": 3, "role": "neteng", "description": "Network Engineer"},
             ]
             # Insert roles into the collection
             await collection.insert_many(roles)

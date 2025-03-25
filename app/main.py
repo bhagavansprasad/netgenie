@@ -4,6 +4,7 @@ import logging
 from app.routers import ifaceconfig
 from app import logging_config
 from app.routers import initialize_roles
+from app.routers import initialize_permissions
 from app.routers import initialize_users
 from app.routers import auth_router
 from app.routers import user_router
@@ -25,6 +26,7 @@ async def lifespan(app: FastAPI):
     """
     logger.info("Starting up...")
     db = await get_database()
+    await initialize_permissions.on_startup_db_initialize_permissions()
     await initialize_roles.on_startup_db_initialize()
     await initialize_users.on_startup_db_initialize_users()
     logger.info("Startup tasks completed.")
