@@ -47,8 +47,6 @@ def config_to_j2_n_json(config: str, prompt_file_path: str = None) -> dict:
         llm_output = common.call_llm_chat(prompt)
         logger.debug(f"LLM Output: {llm_output}")
 
-        print(llm_output)
-        
         extracted_data = parse_gentemplate_output(llm_output)
         logger.debug(f"Extracted data after parsing: {extracted_data}")
 

@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends, Security
 from fastapi.security import OAuth2PasswordBearer, SecurityScopes
 import logging
-from app.routers import ifaceconfig
+from app.routers import cfg_to_templates
 from app import logging_config
 from app.routers import initialize_roles
 from app.routers import initialize_permissions
@@ -38,7 +38,7 @@ app = FastAPI(lifespan=lifespan)
 app.include_router(auth_router.router, prefix="", tags=["Authentication"])
 app.include_router(user_router.router, prefix="", tags=["Users"])
 app.include_router(role_router.router, prefix="", tags=["Roles"])
-app.include_router(ifaceconfig.router, prefix="", tags=["Config"])
+app.include_router(cfg_to_templates.router, prefix="", tags=["Config"])
 
 app.openapi = lambda: custom_openapi(app)
 

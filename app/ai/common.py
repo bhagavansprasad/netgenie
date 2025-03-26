@@ -38,35 +38,38 @@ def parse_gentemplate_output(llm_output: str) -> dict:
     logger.info(f"Entering parse_gentemplate_output")
     logger.debug(f"LLM Output: {llm_output}")
     logger.info(f"Length of LLM Output: {len(llm_output) if llm_output else 0}")
+    
+    llm_output = llm_output.strip()
+    llm_output = llm_output.strip('`')
+    llm_output = llm_output.strip('json')
+    llm_output = llm_output.strip()
 
-    template_match = re.search(r"```jinja2\n(.*?)\n```", llm_output, re.DOTALL)
-    json_match = re.search(r"```json\n(.*?)\n```", llm_output, re.DOTALL)
+    llm_outputd = json.loads(llm_output)
 
-    if not template_match or not json_match:
-        error_message = "Could not find Jinja2 Template or JSON Variables sections in LLM's output."
-        logger.error(error_message)
-        return {"error": error_message}
+    logger.debug(f"LLM Output: {llm_outputd}")
+    logger.debug(f"LLM Output: {type(llm_outputd)}")
 
-    jinja2_template = template_match.group(1).strip()
-    json_string = json_match.group(1).strip()
+    device_name = llm_outputd['device_name']
+    jinja2_template = llm_outputd['Jinja2_Template']
+    json_variables = llm_outputd['JSON_Variables']
 
+    retval  = f"** device_name **\n{device_name}"
+    retval += f"\n\n"
+    
+    retval += f"** Jinja2_Template **\n{jinja2_template}"
+    retval += f"\n\n"
+    
+    retval += f"** json_variables **\n{json.dumps(json_variables, indent=4)}"
+    retval += f"\n\n"
+    
+    logger.debug(f"Extracted device_name: {device_name}")
     logger.debug(f"Extracted jinja2_template: {jinja2_template}")
     logger.info(f"Length of extracted jinja2_template: {len(jinja2_template) if jinja2_template else 0}")
-    logger.debug(f"Extracted json_string: {json_string}")
-    logger.info(f"Length of extracted json_string: {len(json_string) if json_string else 0}")
-
-
-    try:
-        json_variables = json.loads(json_string)
-        logger.debug(f"Extracted json_variables: {json.dumps(json_variables, sort_keys=True, indent=4)}")  # Use json.dumps for pretty logging
-        return {"jinja2_template": jinja2_template, "json_variables": json_variables}
-    except json.JSONDecodeError as e:
-        error_message = f"Error decoding JSON: {e}\nLLM Output: {llm_output}"
-        logger.error(error_message)
+    logger.debug(f"Extracted json_variables: {json_variables}")
     
-        return {"error": error_message}
-    finally:
-        logger.info(f"Exiting parse_gentemplate_output")
+    logger.debug(f"retval :\n{retval}")
+
+    return retval
 
 def parse_genconfig_output(llm_output: str) -> dict:
     """
