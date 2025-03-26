@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends, Query, Body
+from fastapi import UploadFile, File
 from typing import List, Optional
 import logging
 from app.core.database import get_database
@@ -8,6 +9,8 @@ from app.core.auth import check_permission
 from pymongo import ReturnDocument
 from app.models.config_model import ConfigTemplate
 from fastapi.responses import PlainTextResponse
+from app.schemas.user_schemas import UserResponse
+from app.core.security import get_current_user
 
 router = APIRouter()
 
@@ -117,3 +120,84 @@ async def read_jinja2_template(template_name: str, db = Depends(get_database)):
         raise HTTPException(status_code=404, detail="Jinja2 template not found for this template")
 
     return PlainTextResponse(jinja2_template, media_type="text/plain")
+
+
+# 7. Create Template from Text
+@router.post("/templates/text", response_class=PlainTextResponse, status_code=201, name="create_text_template",
+             dependencies=[Depends(check_permission)])
+async def create_text_template(
+    template_name: str = Query(..., title="Template Name", description="The name for the new template"),
+    template_content: str = Body(..., media_type="text/plain", title="Template Content", description="The content of the template"),
+    current_user: UserResponse = Depends(get_current_user),
+    db = Depends(get_database)
+):
+    """Create a new template from plain text content."""
+    logger.info("Entering /templates/text (POST) endpoint")
+    logger.debug(f"Template Name: {template_name}")
+    logger.debug(f"Template Content: {template_content}")
+
+    # Check if template name already exists
+    if await db["config_templates"].find_one({"template_name": template_name}):
+        raise HTTPException(status_code=400, detail="Template name already exists")
+
+    # Create ConfigTemplate object
+    config_template = ConfigTemplate(
+        template_name=template_name,
+        username=current_user.username,  # Use username from authenticated user
+        device_name="N/A",  # Not applicable for manually created templates
+        input_configuration="N/A",  # Not applicable for manually created templates
+        jinja2_template=template_content,
+        json_variables={}  # Empty JSON variables for manually created templates
+    )
+
+    # Insert data into the database
+    config_template_dict = config_template.model_dump()
+    await db["config_templates"].insert_one(config_template_dict)
+    logger.info(f"Template '{template_name}' saved to database.")
+
+    return PlainTextResponse(template_content, media_type="text/plain")
+
+# 8. Create Template from File Upload
+@router.post("/templates/file", response_class=PlainTextResponse, status_code=201, name="create_template_from_file",
+             dependencies=[Depends(check_permission)])
+async def create_template_from_file(
+    template_name: str = Query(..., title="Template Name", description="The name for the new template"),
+    file: UploadFile = File(..., title="Template File", description="The file containing the template content"),
+    current_user: UserResponse = Depends(get_current_user),
+    db = Depends(get_database)
+):
+    """Create a new template by uploading a file."""
+    logger.info("Entering /templates/file (POST) endpoint")
+    logger.debug(f"Template Name: {template_name}")
+    logger.debug(f"Filename: {file.filename}")
+
+    # Check if template name already exists
+    if await db["config_templates"].find_one({"template_name": template_name}):
+        raise HTTPException(status_code=400, detail="Template name already exists")
+
+    try:
+        contents = await file.read()
+        template_content = contents.decode()  # Assuming UTF-8 encoding
+        logger.debug(f"Template Content: {template_content}")
+    except Exception as e:
+        logger.error(f"Error reading file: {e}")
+        raise HTTPException(status_code=500, detail=f"Error reading file: {e}")
+    finally:
+        await file.close()
+
+    # Create ConfigTemplate object
+    config_template = ConfigTemplate(
+        template_name=template_name,
+        username=current_user.username,  # Use username from authenticated user
+        device_name="N/A",  # Not applicable for manually created templates
+        input_configuration="N/A",  # Not applicable for manually created templates
+        jinja2_template=template_content,
+        json_variables={}  # Empty JSON variables for manually created templates
+    )
+
+    # Insert data into the database
+    config_template_dict = config_template.model_dump()
+    await db["config_templates"].insert_one(config_template_dict)
+    logger.info(f"Template '{template_name}' saved to database.")
+
+    return PlainTextResponse(template_content, media_type="text/plain")
