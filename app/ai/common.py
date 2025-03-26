@@ -24,7 +24,7 @@ class VertexAIConnector:  # Simple connector to get model object
         self.model = GenerativeModel(model_name)
 
 
-def parse_gentemplate_output(llm_output: str) -> dict:
+def parse_gentemplate_output(llm_output: str):
     """
     Parses the LLM output to extract the Jinja2 template and JSON variables.
 
@@ -69,7 +69,7 @@ def parse_gentemplate_output(llm_output: str) -> dict:
     
     logger.debug(f"retval :\n{retval}")
 
-    return retval
+    return llm_outputd, retval
 
 def parse_genconfig_output(llm_output: str) -> dict:
     """

@@ -47,7 +47,7 @@ def config_to_j2_n_json(config: str, prompt_file_path: str = None) -> dict:
         llm_output = common.call_llm_chat(prompt)
         logger.debug(f"LLM Output: {llm_output}")
 
-        extracted_data = parse_gentemplate_output(llm_output)
+        data_dict, extracted_data = parse_gentemplate_output(llm_output)
         logger.debug(f"Extracted data after parsing: {extracted_data}")
 
 
@@ -55,7 +55,7 @@ def config_to_j2_n_json(config: str, prompt_file_path: str = None) -> dict:
             logger.error(f"LLM Error: {extracted_data['error']}")
             return extracted_data
 
-        return extracted_data
+        return data_dict, extracted_data
 
     except FileNotFoundError:
         error_message = f"Prompt file not found: {prompt_file_path}"

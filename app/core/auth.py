@@ -2,12 +2,13 @@ from fastapi import Depends, HTTPException, status, Request, FastAPI
 from app.core.security import get_current_user
 from app.core.database import get_database
 import logging
+from app.schemas.user_schemas import UserResponse # Import UserResponse
 
 logger = logging.getLogger(__name__)
 
 from fastapi import Request
 
-async def check_permission(request: Request, user: dict = Depends(get_current_user), db = Depends(get_database)):
+async def check_permission(request: Request, user: UserResponse = Depends(get_current_user), db = Depends(get_database)):
     """
     Checks if the user's role has permission to access the requested endpoint.
     Now uses request.scope["route"].name to get the route name.
@@ -29,17 +30,17 @@ async def check_permission(request: Request, user: dict = Depends(get_current_us
     logger.debug(f"Checking permission for endpoint: {endpoint_name}, method: {request.method}, user: {user}")
 
     permission = await db["endpoint_permissions"].find_one(
-        {"endpoint_name": endpoint_name, "role_id": user["role_id"], "method": request.method}
+        {"endpoint_name": endpoint_name, "role_id": user.role_id, "method": request.method}  # Changed to user.role_id
     )
 
     logger.debug(f"Permission record: {permission}")
 
     if permission:
-        logger.info(f"User '{user['username']}' authorized to access endpoint: {endpoint_name}")
+        logger.info(f"User '{user.username}' authorized to access endpoint: {endpoint_name}") # Changed to user.username
         logger.debug("Exiting check_permission function - Permission Granted")
         return  # Permission granted
     else:
-        logger.warning(f"User '{user['username']}' does not have permission to access endpoint: {endpoint_name}")
+        logger.warning(f"User '{user.username}' does not have permission to access endpoint: {endpoint_name}") # Changed to user.username
         logger.debug("Exiting check_permission function - Permission Denied")
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN, detail="Insufficient permissions"
