@@ -119,6 +119,57 @@ async def on_startup_db_initialize_permissions():
             "role_id": 1,
             "method": "POST"
          },
+        {
+            "endpoint_name": "create_device",
+            "role_id": 1,
+            "method": "POST"
+        },
+        {
+            "endpoint_name": "list_devices",
+            "role_id": 1,
+            "method": "GET"
+        },
+        {
+            "endpoint_name": "read_device",
+            "role_id": 1,
+            "method": "GET"
+        },
+        {
+            "endpoint_name": "update_device",
+            "role_id": 1,
+            "method": "PUT"
+        },
+        {
+            "endpoint_name": "delete_device",
+            "role_id": 1,
+            "method": "DELETE"
+        },
+
+        {
+            "endpoint_name": "get_devices_by_customer",
+            "role_id": 1,
+            "method": "GET"
+        },
+        {
+            "endpoint_name": "get_devices_by_type",
+            "role_id": 1,
+            "method": "GET"
+        },
+        {
+            "endpoint_name": "get_devices_by_location",
+            "role_id": 1,
+            "method": "GET"
+        },
+        {
+            "endpoint_name": "get_devices_by_status",
+            "role_id": 1,
+            "method": "GET"
+        },
+        {
+            "endpoint_name": "get_devices_by_creator",
+            "role_id": 1,
+            "method": "GET"
+        },
     ]
     await db["endpoint_permissions"].insert_many(permissions)
     logger.info("Endpoint permissions initialized.")
