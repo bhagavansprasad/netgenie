@@ -94,6 +94,31 @@ async def on_startup_db_initialize_permissions():
             "role_id": 1,
             "method": "POST"
         },
+        {
+            "endpoint_name": "list_customers",
+            "role_id": 1,
+            "method": "GET"
+        },
+        {
+            "endpoint_name": "read_customer_by_name",
+            "role_id": 1,
+            "method": "GET"
+        },
+        {
+            "endpoint_name": "update_customer_by_name",
+            "role_id": 1,
+            "method": "PUT"
+        },
+        {
+            "endpoint_name": "delete_customer_by_name",
+            "role_id": 1,
+            "method": "DELETE"
+        },
+        {
+            "endpoint_name": "create_customer",
+            "role_id": 1,
+            "method": "POST"
+         },
     ]
     await db["endpoint_permissions"].insert_many(permissions)
     logger.info("Endpoint permissions initialized.")
