@@ -1,0 +1,7 @@
+{
+    "hostname": "Access_Switch",
+    "vlan_id": 20,
+    "vlan_name": "Employee_Network",
+    "interface_name": "FastEthernet0/24",
+    "description": "Employee VLAN Port"
+}
