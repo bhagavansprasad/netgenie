@@ -12,7 +12,7 @@ def configure_logging():
         },
         'handlers': {
             'default': {
-                'level': 'DEBUG',  # Ensure handler can capture DEBUG logs
+                'level': 'DEBUG', 
                 'formatter': 'standard',
                 'class': 'logging.StreamHandler',
                 'stream': 'ext://sys.stdout',
@@ -24,14 +24,14 @@ def configure_logging():
                 'level': 'INFO',
                 'propagate': False
             },
-            'app.core.security': {  # Module-Specific Logger
+            'app.core.security': {  
                 'handlers': ['default'],
                 'level': 'DEBUG',
-                'propagate': False  # Prevent log bubbling
+                'propagate': False  
             },
-            'app.core.auth': {  # 🔥 Explicitly add `app.core.auth`
+            'app.core.auth': {  
                 'handlers': ['default'],
-                'level': 'DEBUG',  # Enable DEBUG logs
+                'level': 'DEBUG', 
                 'propagate': False
             },
             'app.routers.role_router': {  
@@ -39,9 +39,28 @@ def configure_logging():
                 'level': 'DEBUG', 
                 'propagate': False
             },
+            'app.routers.cfg_to_templates': {  
+                'handlers': ['default'],
+                'level': 'DEBUG', 
+                'propagate': False
+            },
+            'app.routers.cfg_to_templates': {  
+                'handlers': ['default'],
+                'level': 'DEBUG', 
+                'propagate': False
+            },
+            'app.ai.ai_interface': {  
+                'handlers': ['default'],
+                'level': 'DEBUG', 
+                'propagate': False
+            },
+            'app.ai.common': {  
+                'handlers': ['default'],
+                'level': 'DEBUG', 
+                'propagate': False
+            },
         }
     }
-    
     logging.config.dictConfig(logging_config)
 
 # Configure logging
