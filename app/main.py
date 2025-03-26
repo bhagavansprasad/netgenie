@@ -9,6 +9,7 @@ from app.routers import initialize_users
 from app.routers import auth_router
 from app.routers import user_router
 from app.routers import role_router
+from app.routers import template_router
 from app.core.database import get_database
 from contextlib import asynccontextmanager
 from app.core.security import custom_openapi
@@ -39,6 +40,7 @@ app.include_router(auth_router.router, prefix="", tags=["Authentication"])
 app.include_router(user_router.router, prefix="", tags=["Users"])
 app.include_router(role_router.router, prefix="", tags=["Roles"])
 app.include_router(cfg_to_templates.router, prefix="", tags=["Config"])
+app.include_router(template_router.router, prefix="", tags=["Templates"])
 
 app.openapi = lambda: custom_openapi(app)
 

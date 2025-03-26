@@ -54,6 +54,36 @@ async def on_startup_db_initialize_permissions():
             "role_id": 1,
             "method": "POST"
         },
+        {
+            "endpoint_name": "list_templates",
+            "role_id": 1,
+            "method": "GET"
+        },
+        {
+            "endpoint_name": "read_complete_template",
+            "role_id": 1,
+            "method": "GET"
+        },
+        {
+            "endpoint_name": "get_templates_by_criteria",
+            "role_id": 1,
+            "method": "GET"
+        },
+        {
+            "endpoint_name": "update_template",
+            "role_id": 1,
+            "method": "PUT"
+        },
+        {
+            "endpoint_name": "delete_template",
+            "role_id": 1,
+            "method": "DELETE"
+        },    
+        {
+            "endpoint_name": "read_jinja2_template",
+            "role_id": 1,
+            "method": "GET"
+        },    
     ]
     await db["endpoint_permissions"].insert_many(permissions)
     logger.info("Endpoint permissions initialized.")
