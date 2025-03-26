@@ -6,6 +6,7 @@ app/core/settings.py
 app/routers/initialize_permissions.py
 app/routers/user_router.py
 app/routers/cfg_to_templates.py
+app/routers/template_router.py
 app/models/config_model.py
 app/schemas/config_schema.py
 app/main.py
