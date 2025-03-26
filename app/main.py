@@ -11,7 +11,7 @@ from app.routers import user_router
 from app.routers import role_router
 from app.routers import template_router
 from app.routers import customers_router
-# from app.routers import devices_router
+from app.routers import devices_router
 
 from app.core.database import get_database
 from contextlib import asynccontextmanager
@@ -46,7 +46,7 @@ app.include_router(role_router.router, prefix="", tags=["Roles"])
 app.include_router(cfg_to_templates.router, prefix="", tags=["Config"])
 app.include_router(template_router.router, prefix="", tags=["Templates"])
 app.include_router(customers_router.router, prefix="", tags=["Customers"])
-# app.include_router(devices_router.router, prefix="", tags=["Devices"])
+app.include_router(devices_router.router, prefix="", tags=["Devices"])
 
 app.openapi = lambda: custom_openapi(app)
 
