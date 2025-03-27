@@ -170,6 +170,41 @@ async def on_startup_db_initialize_permissions():
             "role_id": 1,
             "method": "GET"
         },
+        {
+            "endpoint_name": "create_config",
+            "role_id": 1,
+            "method": "POST"
+        },
+        {
+            "endpoint_name": "create_config_from_file",
+            "role_id": 1,
+            "method": "POST"
+        },
+        {
+            "endpoint_name": "list_configs",
+            "role_id": 1,
+            "method": "GET"
+        },
+        {
+            "endpoint_name": "list_configs_by_customer",
+            "role_id": 1,
+            "method": "GET"
+        },
+        {
+            "endpoint_name": "list_configs_by_user",
+            "role_id": 1,
+            "method": "GET"
+        },
+        {
+            "endpoint_name": "update_config",
+            "role_id": 1,
+            "method": "PUT"
+        },
+        {
+            "endpoint_name": "delete_config",
+            "role_id": 1,
+            "method": "DELETE"
+        },
     ]
     await db["endpoint_permissions"].insert_many(permissions)
     logger.info("Endpoint permissions initialized.")
