@@ -18,3 +18,48 @@ ABC_Corp	    Core Router	            Core_Router	            core_router_config.
 ABC_Corp	    Access Switch	        Access_Switch	        access_switch_config.json
 XYZ_Tech	    Branch Router	        Branch_Office_Router	branch_router_config.json
 XYZ_Tech	    Distribution Switch	    Distribution_Switch	    distribution_switch_config.json
+
+
+# Task: For configs collection I wanted to build endpoints to do CRUD operations
+## Implimentation details
+1. the configs collectins will have below columns
+    _id, name, customer, config_data, create_by, created_at, status
+2. name: is the key to do all CRUD operations - Manadotory parameter
+3. customer: Is the customer name which should be part of customers.name collection - Manadotory parameter
+4. The two parameaters (name, customer) are query level parameters
+5. config_data: os JSON object which is passed as part of Body - Manadotory parameter
+6. end_points to create
+    create_config
+        config-name
+        customer
+        config_data
+
+    create_config_by_file
+        config-name
+        customer
+        config file attach
+
+    list_configs
+        list all configs
+
+    list_configs_by_customer
+        list all configs by customer name
+
+    list_configs_by_user
+        list all configs by user name
+
+    update_config : Parameters 
+        config-name
+        new-config-name
+        customer
+        config_data
+
+    delete_config
+        config-name
+7. Generate models.py and schemas.py
+8. Generate only changes to keep in initialize_permissions.py
+9. Define router file content is like below
+    router = APIRouter()
+    @router.get
+10. Continue to use authentication and authraization as there in customers_router.py
+

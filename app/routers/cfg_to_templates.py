@@ -7,7 +7,7 @@ from app.core.auth import check_permission
 from app.core.security import get_current_user 
 from app.schemas.user_schemas import UserResponse 
 from datetime import datetime
-from app.models.config_model import ConfigTemplate 
+from app.models.config_template_model import ConfigTemplate 
 
 router = APIRouter()
 

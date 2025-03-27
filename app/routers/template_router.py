@@ -4,10 +4,10 @@ from typing import List, Optional
 import logging
 from app.core.database import get_database
 from bson import ObjectId
-from app.schemas.config_schema import ConfigTemplateListResponse, ConfigTemplateResponse
+from app.schemas.config_template_schema import ConfigTemplateListResponse, ConfigTemplateResponse
 from app.core.auth import check_permission
 from pymongo import ReturnDocument
-from app.models.config_model import ConfigTemplate
+from app.models.config_template_model import ConfigTemplate
 from fastapi.responses import PlainTextResponse
 from app.schemas.user_schemas import UserResponse
 from app.core.security import get_current_user
