@@ -69,16 +69,15 @@ def config_to_j2_n_json(config: str, prompt_file_path: str = None) -> dict:
         logger.info("Exiting config_to_j2_n_json")
 
 
-def j2_and_json_to_config(j2_template: str, json_data: dict, prompt_file_path: str = None) -> dict:
+def generate_config_from_j2_json(j2_template: str, json_data: dict, prompt_file_path: str = None) -> dict:
     """
     Generates a Cisco IOS configuration from a Jinja2 template and JSON variables
     using a prompt template and an LLM. The template rendering is performed by the LLM.
     """
     logger.info(f"Entering j2_and_json_to_config")
-    logger.debug(f"j2_template: {j2_template}")
-    logger.debug(f"json_data: {json_data}")
-    logger.debug(f"prompt_file_path: {prompt_file_path}")
-
+    logger.debug(f"--j2_template--\n{j2_template}\n")
+    logger.debug(f"--json_data--\n{json_data}\n")
+    logger.debug(f"--prompt_file_path--\n{prompt_file_path}\n")
 
     try:
         prompt_file = prompt_file_path or settings.J2_TO_CONFIG_PROMPT
@@ -89,20 +88,15 @@ def j2_and_json_to_config(j2_template: str, json_data: dict, prompt_file_path: s
             prompt_template_string = f.read() # Read the prompt template as a string
         logger.debug(f"Prompt template read successfully from {prompt_file}")
 
-
-        env = jinja2.Environment()
-        prompt_template = env.from_string(prompt_template_string)
-        prompt = prompt_template.render(j2_template=j2_template, json_data=json_data) # Use Jinja2 render
-        logger.debug(f"Prompt after rendering: {prompt}")
-
+        prompt = prompt_template_string.replace('{{ j2_template }}', j2_template)
+        prompt = prompt.replace('{{ json_data }}', json.dumps(json_data, indent=4))
+        logger.debug(f"--Prompt after formatting--\n{prompt}\n")
 
         llm_output = common.call_llm_chat(prompt)
         logger.debug(f"LLM Output: {llm_output}")
 
-
         extracted_data = parse_genconfig_output(llm_output)
-        logger.debug(f"Extracted data after parsing: {extracted_data}")
-
+        logger.debug(f"--Extracted data after parsing--\n{extracted_data}\n")
 
         if "error" in extracted_data:
             logger.error(f"LLM output Error: {extracted_data}")

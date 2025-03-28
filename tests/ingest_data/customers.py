@@ -32,7 +32,7 @@ def list_customers(base_url, access_token):
         response.raise_for_status()
         data = response.json()
 
-        print("\n--- Customers ---")
+        print("\n--- Customers ---(customers.name)")
         for item in data:
             name = item.get("name")
             if name:

@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends, Security
 from fastapi.security import OAuth2PasswordBearer, SecurityScopes
 import logging
-from app.routers import cfg_to_templates
+from app.routers import config_router
 from app import logging_config
 from app.routers import initialize_roles
 from app.routers import initialize_permissions
@@ -45,7 +45,7 @@ app.include_router(customers_router.router, prefix="", tags=["Customers"])
 app.include_router(devices_router.router, prefix="", tags=["Devices"])
 app.include_router(template_router.router, prefix="", tags=["Templates"])
 app.include_router(config_values_router.router, prefix="", tags=["Config Values"])
-app.include_router(cfg_to_templates.router, prefix="", tags=["Config-to-template (to be removed)"])
+app.include_router(config_router.router, prefix="", tags=["Generate Configuration"])
 app.include_router(user_router.router, prefix="", tags=["Users"])
 app.include_router(role_router.router, prefix="", tags=["Roles"])
 
