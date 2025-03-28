@@ -39,7 +39,7 @@ def configure_logging():
                 'level': 'DEBUG', 
                 'propagate': False
             },
-            'app.routers.cfg_to_templates': {  
+            'app.routers.config_router': {  
                 'handlers': ['default'],
                 'level': 'DEBUG', 
                 'propagate': False

@@ -31,7 +31,7 @@ def list_devices(base_url, access_token):
         response.raise_for_status()
         data = response.json()
 
-        print("\n--- Devices ---")
+        print("\n--- Devices ---(devices.name)")
         for item in data:
             name = item.get("name")
             if name:

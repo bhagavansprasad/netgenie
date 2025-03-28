@@ -33,7 +33,7 @@ def list_config_values(base_url, access_token):
         response.raise_for_status()
         data = response.json()
 
-        print("\n--- Config Values ---")
+        print("\n--- Config Values ---(config_values.name)")
         for item in data:
             name = item.get("name")
             if name:

@@ -30,7 +30,7 @@ def list_config_templates(base_url, access_token):
         response.raise_for_status()
         data = response.json()
 
-        print("\n--- Config Templates ---")
+        print("\n--- Config Templates ---(template.template_name)")
         for item in data:
             name = item.get("template_name")
             if name:
