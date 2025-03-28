@@ -20,16 +20,16 @@ router = APIRouter()
     name="create_config")
 async def create_config(
     name: str = Query(..., description="Name of the configuration"),
-    customer: str = Query(..., description="Customer name"),
+    device_name: str = Query(..., description="Device name"),
     config_data: Dict = Body(..., description="Configuration data (JSON object)"),
     db = Depends(get_database),
     current_user: UserResponse = Depends(get_current_user)
 ):
     """Creates a new configuration."""
 
-    # Validate customer existence
-    if not await db["customers"].find_one({"name": customer}):
-        raise HTTPException(status_code=400, detail="Customer not found")
+    # Validate device existence
+    if not await db["devices"].find_one({"name": device_name}):
+        raise HTTPException(status_code=400, detail="Device not found")
 
     # Check for duplicate config name
     if await db["configs"].find_one({"name": name}):
@@ -37,7 +37,7 @@ async def create_config(
 
     config = Config(
         name=name,
-        customer=customer,
+        device_name=device_name,
         config_data=config_data,
         created_by=current_user.username,
         created_at=datetime.now()
@@ -57,16 +57,16 @@ async def create_config(
     )
 async def create_config_from_file(
     name: str = Query(..., description="Name of the configuration"),
-    customer: str = Query(..., description="Customer name"),
+    device_name: str = Query(..., description="Device name"),
     file: UploadFile = File(..., description="Configuration file"),
     db = Depends(get_database),
     current_user: UserResponse = Depends(get_current_user)
 ):
     """Creates a new configuration from a file upload."""
 
-    # Validate customer existence
-    if not await db["customers"].find_one({"name": customer}):
-        raise HTTPException(status_code=400, detail="Customer not found")
+    # Validate device existence
+    if not await db["devices"].find_one({"name": device_name}):
+        raise HTTPException(status_code=400, detail="Device not found")
 
     # Check for duplicate config name
     if await db["configs"].find_one({"name": name}):
@@ -83,7 +83,7 @@ async def create_config_from_file(
 
     config = Config(
         name=name,
-        customer=customer,
+        device_name=device_name,
         config_data=config_data,
         created_by=current_user.username,
         created_at=datetime.now()
@@ -109,21 +109,24 @@ async def list_configs(db = Depends(get_database)):
     return configs
 
 @router.get(
-    "/configs/by-customer/{customer}",
+    "/configs/by-customer/{customer_name}",
     response_model=List[ConfigListResponse],
     dependencies=[Depends(check_permission)],
     name="list_configs_by_customer"
     )
 async def list_configs_by_customer(
-    # customer: str = Query(..., description="Customer name"),
-    customer: str,  
+    customer_name: str,
     db = Depends(get_database)
     ):
     """Lists configurations for a specific customer."""
     configs = []
-    async for config in db["configs"].find({"customer": customer}):
-        config["_id"] = str(config["_id"])
-        configs.append(ConfigListResponse(**config))
+    # Find devices with matching customer_name
+    async for device in db["devices"].find({"customer_name": customer_name}):
+        device_name = device["name"]
+        # Find configs with matching device_name
+        async for config in db["configs"].find({"device_name": device_name}):
+            config["_id"] = str(config["_id"])
+            configs.append(ConfigListResponse(**config))
     return configs
 
 @router.get(
@@ -153,12 +156,12 @@ async def list_configs_by_user(
 async def update_config(
     name: str,
     new_name: str = Query(..., description="New name for the configuration"),
-    customer: Optional[str] = Query(None, description="New customer name (optional)"),
+    device_name: Optional[str] = Query(None, description="New device name (optional)"),
     config_data: Optional[Dict] = Body(None, description="New configuration data (optional JSON object)"),
     db = Depends(get_database),
     current_user: UserResponse = Depends(get_current_user)
 ):
-    """Updates an existing configuration.  Customer and config_data are optional."""
+    """Updates an existing configuration.  device_name and config_data are optional."""
 
     # Get existing configuration
     existing_config = await db["configs"].find_one({"name": name})
@@ -170,18 +173,18 @@ async def update_config(
     if existing_config_with_new_name and existing_config_with_new_name["_id"] != existing_config["_id"]:
         raise HTTPException(status_code=400, detail="Configuration name already exists")
 
-    # Validate customer existence if a new customer is provided
-    if customer and not await db["customers"].find_one({"name": customer}):
-        raise HTTPException(status_code=400, detail="Customer not found")
+    # Validate device existence if a new device is provided
+    if device_name and not await db["devices"].find_one({"name": device_name}):
+        raise HTTPException(status_code=400, detail="Device not found")
 
     # Use existing values if new values are not provided
-    updated_customer = customer if customer is not None else existing_config["customer"]
+    updated_device_name = device_name if device_name is not None else existing_config["device_name"]
     updated_config_data = config_data if config_data is not None else existing_config["config_data"]
 
 
     config_dict = {
         "name": new_name,
-        "customer": updated_customer,
+        "device_name": updated_device_name,
         "config_data": updated_config_data,
         "created_by": current_user.username,
         "created_at": datetime.now()

@@ -1,0 +1,1 @@
+# Read last 10 bytes from t.txt file

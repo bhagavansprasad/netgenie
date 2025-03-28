@@ -6,7 +6,7 @@ from datetime import datetime
 class Config(BaseModel):
     id: Optional[str] = Field(alias='_id', default=None)
     name: str = Field(..., description="Configuration name (unique)")
-    customer: str = Field(..., description="Customer name (must exist in customers collection)")
+    device_name: str = Field(..., description="Device name (foreign key to devices collection)")
     config_data: Dict = Field(..., description="JSON object containing the configuration data")
     created_by: str = Field(..., description="Username of the creator")
     created_at: datetime = Field(default_factory=datetime.utcnow, description="Creation timestamp")
@@ -20,7 +20,7 @@ class Config(BaseModel):
 class ConfigListResponse(BaseModel):
     id: str = Field(..., alias="_id")
     name: str
-    customer: str
+    device_name: str
     config_data: Dict  
     created_by: str
     created_at: datetime
@@ -29,7 +29,7 @@ class ConfigListResponse(BaseModel):
 class ConfigResponse(BaseModel):
     id: str = Field(..., alias="_id")
     name: str
-    customer: str
+    device_name: str
     config_data: Dict
     created_by: str
     created_at: datetime
