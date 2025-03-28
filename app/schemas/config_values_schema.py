@@ -1,9 +1,9 @@
-# app/schemas/config_schema.py
+# app/schemas/config_values_schema.py
 from pydantic import BaseModel, Field
 from typing import Optional, Dict
 from datetime import datetime
 
-class Config(BaseModel):
+class ConfigValue(BaseModel):
     id: Optional[str] = Field(alias='_id', default=None)
     name: str = Field(..., description="Configuration name (unique)")
     device_name: str = Field(..., description="Device name (foreign key to devices collection)")
@@ -17,7 +17,7 @@ class Config(BaseModel):
         allow_population_by_field_name = True
 
 
-class ConfigListResponse(BaseModel):
+class ConfigValueListResponse(BaseModel):
     id: str = Field(..., alias="_id")
     name: str
     device_name: str
@@ -26,7 +26,7 @@ class ConfigListResponse(BaseModel):
     created_at: datetime
     status: str
     
-class ConfigResponse(BaseModel):
+class ConfigValueResponse(BaseModel):
     id: str = Field(..., alias="_id")
     name: str
     device_name: str

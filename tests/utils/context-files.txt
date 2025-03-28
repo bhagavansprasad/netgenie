@@ -8,7 +8,9 @@ app/routers/template_router.py
 app/models/customer_model.py
 app/schemas/customers_schemas.py
 app/routers/customers_router.py
-app/routers/configs_router.py
-app/models/config_model.py
-app/schemas/config_schema.py
+
+app/routers/config_values_router.py
+app/models/config_values_model.py
+app/schemas/config_values_schema.py
+
 app/main.py

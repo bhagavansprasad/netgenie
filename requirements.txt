@@ -10,3 +10,4 @@ typer
 motor
 python-jose
 python-multipart
+requests
