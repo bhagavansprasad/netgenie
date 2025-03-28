@@ -63,3 +63,41 @@ XYZ_Tech	    Distribution Switch	    Distribution_Switch	    distribution_switch
     @router.get
 10. Continue to use authentication and authraization as there in customers_router.py
 
+
+# Task: I want to make changes to configs collection
+## Changes
+1. Remove column customer from the schema
+2. Add a new column device_name
+    Note: Device name is foregin key to devices.name
+6. end_points to create
+    create_config
+        config-name - Mandotory field
+        device_name - Mandotory field
+        config_data - Mandotory field
+
+    create_config_by_file
+        config-name - Mandotory field
+        device_name - Mandotory field
+        config file attach - Mandotory field
+
+    list_configs - No changes
+    list_configs_by_customer
+        list all configs by configs.devices_name == devices.name -> devices.customer_name
+
+    list_configs_by_user - No changes
+
+    update_config : Parameters 
+        config-name - Mandotory field
+        new-config-name - Mandotory field
+        device_name - optional
+        config_data - optional
+
+    delete_config - No changes
+
+7. Generate models.py and schemas.py if changes required
+8. Generate only changes to keep in initialize_permissions.py
+9. Define router file content is like below
+    router = APIRouter()
+    @router.get
+10. Continue to use authentication and authraization as there in customers_router.py
+

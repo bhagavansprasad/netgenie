@@ -9,7 +9,7 @@ class Config(BaseModel):
     """
     id: Optional[str] = Field(alias='_id', default=None)
     name: str = Field(..., description="Configuration name (unique)")
-    customer: str = Field(..., description="Customer name (must exist in customers collection)")
+    device_name: str = Field(..., description="Device name (foreign key to devices collection)")
     config_data: Dict = Field(..., description="JSON object containing the configuration data")
     created_by: str = Field(..., description="Username of the creator")
     created_at: datetime = Field(default_factory=datetime.utcnow, description="Creation timestamp")
@@ -18,3 +18,4 @@ class Config(BaseModel):
     class Config:
         orm_mode = True
         allow_population_by_field_name = True
+        
