@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Body, HTTPException, Query
 from app.ai import ai_interface
-from app.models.config_model import ConfigModel
+from app.models.config_values_model import ConfigModel
 from typing import Dict, List
 import logging
 from app.core.database import get_database

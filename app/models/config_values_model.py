@@ -1,9 +1,9 @@
-# app/models/config_model.py
+# app/models/config_values_model.py
 from pydantic import BaseModel, Field
 from typing import Optional, Dict
 from datetime import datetime
 
-class Config(BaseModel):
+class ConfigValue(BaseModel):
     """
     Represents a configuration in the database.
     """
@@ -18,4 +18,3 @@ class Config(BaseModel):
     class Config:
         orm_mode = True
         allow_population_by_field_name = True
-        
