@@ -1,0 +1,60 @@
+The below jsx file I wanted make changes in section  {/* Latest Templates List */} 
+The rows to be display is latest row to be displayed from the return value of REST API below
+
+curl -X 'GET' \
+  'http://localhost:8000/templates' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiaGFnYXZhbiIsInJvbGVfaWQiOjEsInJvbGVfbmFtZSI6ImFkbWluIiwiZXhwIjoxNzQzMzY3NTA5fQ.HGZgFCiDBsRDaWJXIiM-v1oMXgnlFfnbJt4crIALQPw'
+
+Values to be displayed like below
+Template Name: template_name
+Ceated By : username
+Created Date:timestamp
+Status: Active
+
+Thank you its working.
+Now I wanted to make changes in section {/* Create Template Form */} in the same jsx
+After filling the values when cliked "Create Template"
+It should invoke a rest API
+The curl request for the same is like below
+
+add template
+curl -X 'POST' \
+  'http://localhost:8000/templates/text?template_name=cisco_router_template' \
+  -H 'accept: text/plain' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiaGFnYXZhbiIsInJvbGVfaWQiOjEsInJvbGVfbmFtZSI6ImFkbWluIiwiZXhwIjoxNzQzMTAyMjMyfQ.V3F4l6eabmCzcPUXHUHezt4rTGqIxgKt67tBZ79ve28' \
+  -H 'Content-Type: text/plain' \
+  -d 'hostname {{ hostname }}
+!
+{% for interface_name, details in interfaces.items() %}
+interface {{ interface_name }}
+ description {{ details.description }}
+ ip address {{ details.ip_address }} {{ details.subnet_mask }}
+ no shutdown
+{% endfor %}
+!
+{% if routing.ospf %}
+router ospf {{ routing.ospf.process_id }}
+{% for network in routing.ospf.networks %}
+ network {{ network.network }} {{ network.wildcard_mask }} area {{ network.area }}
+{% endfor %}
+{% endif %}
+!
+{% if security.ssh.enabled %}
+ip ssh version 2
+{% for user in security.ssh.users %}
+username {{ user.username }} privilege {{ user.privilege }} secret {{ user.password }}
+{% endfor %}
+{% endif %}
+!
+{% for acl in security.acl %}
+ip access-list extended {{ acl.name }}
+{% for rule in acl.rules %}
+ {{ rule.action }} {{ rule.protocol }} {{ rule.source }} any
+{% endfor %}
+{% endfor %}
+!
+end
+write memory
+'
+

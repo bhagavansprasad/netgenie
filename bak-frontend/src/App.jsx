@@ -1,4 +1,19 @@
-// src/App.jsx
+// import React from 'react';
+// import LoginPage from './components/LoginPage';
+// import './App.css'; // You can add global styles here if you want
+// import Dashboard from './components/dasboard';
+
+// function App() {
+//   return (
+//     <div>
+//       <LoginPage />
+//       <Dashboard />
+//     </div>
+//   );
+// }
+  
+// export default App;
+
 
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';

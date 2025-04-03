@@ -1,0 +1,107 @@
+login
+curl -X 'POST' \
+  'http://localhost:8000/auth/login' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  -d 'grant_type=password&username=bhagavan&password=jnjnuh&scope=&client_id=string&client_secret=string'
+
+Response
+{
+  "username": "bhagavan",
+  "email": "bhagavan@example.com",
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiaGFnYXZhbiIsInJvbGVfaWQiOjEsInJvbGVfbmFtZSI6ImFkbWluIiwiZXhwIjoxNzQzMTYxODEwfQ.qH0tgbN7rPr619dMnVeAir2TsjFMTw6w0MGFeLp7SZI",
+  "token_type": "bearer",
+  "role": {
+    "id": 1,
+    "name": "admin"
+  }
+}
+
+add customer
+curl -X 'POST' \
+  'http://localhost:8000/customers/?customer_name=ABC_Corp' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiaGFnYXZhbiIsInJvbGVfaWQiOjEsInJvbGVfbmFtZSI6ImFkbWluIiwiZXhwIjoxNzQzMTAyMjMyfQ.V3F4l6eabmCzcPUXHUHezt4rTGqIxgKt67tBZ79ve28' \
+  -d ''
+  
+add customer
+curl -X 'POST' \
+  'http://localhost:8000/customers/?customer_name=XYZ_Tech' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiaGFnYXZhbiIsInJvbGVfaWQiOjEsInJvbGVfbmFtZSI6ImFkbWluIiwiZXhwIjoxNzQzMTAyMjMyfQ.V3F4l6eabmCzcPUXHUHezt4rTGqIxgKt67tBZ79ve28' \
+  -d ''
+  
+add device
+curl -X 'POST' \
+  'http://localhost:8000/devices/?customer_name=ABC_Corp&name=Core_Router&type=router&location=HQ%20-%20Data%20Center' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiaGFnYXZhbiIsInJvbGVfaWQiOjEsInJvbGVfbmFtZSI6ImFkbWluIiwiZXhwIjoxNzQzMTAyMjMyfQ.V3F4l6eabmCzcPUXHUHezt4rTGqIxgKt67tBZ79ve28' \
+  -d ''
+
+add device
+curl -X 'POST' \
+  'http://localhost:8000/devices/?customer_name=ABC_Corp&name=Access_Switch&type=switch&location=HQ%20-%20Data%20Center' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiaGFnYXZhbiIsInJvbGVfaWQiOjEsInJvbGVfbmFtZSI6ImFkbWluIiwiZXhwIjoxNzQzMTAyMjMyfQ.V3F4l6eabmCzcPUXHUHezt4rTGqIxgKt67tBZ79ve28' \
+  -d ''  
+  
+add device
+curl -X 'POST' \
+  'http://localhost:8000/devices/?customer_name=XYZ_Tech&name=Branch_Office_Router&type=router&location=Branch%20Office%20-%20New%20York' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiaGFnYXZhbiIsInJvbGVfaWQiOjEsInJvbGVfbmFtZSI6ImFkbWluIiwiZXhwIjoxNzQzMTAyMjMyfQ.V3F4l6eabmCzcPUXHUHezt4rTGqIxgKt67tBZ79ve28' \
+  -d ''
+  
+add device
+curl -X 'POST' \
+  'http://localhost:8000/devices/?customer_name=XYZ_Tech&name=Distribution_Switch&type=switch&location=Branch%20Office%20-%20New%20York' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiaGFnYXZhbiIsInJvbGVfaWQiOjEsInJvbGVfbmFtZSI6ImFkbWluIiwiZXhwIjoxNzQzMTAyMjMyfQ.V3F4l6eabmCzcPUXHUHezt4rTGqIxgKt67tBZ79ve28' \
+  -d ''
+  
+add template
+curl -X 'POST' \
+  'http://localhost:8000/templates/text?template_name=cisco_router_template' \
+  -H 'accept: text/plain' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiaGFnYXZhbiIsInJvbGVfaWQiOjEsInJvbGVfbmFtZSI6ImFkbWluIiwiZXhwIjoxNzQzMTAyMjMyfQ.V3F4l6eabmCzcPUXHUHezt4rTGqIxgKt67tBZ79ve28' \
+  -H 'Content-Type: text/plain' \
+  -d 'hostname {{ hostname }}
+!
+{% for interface_name, details in interfaces.items() %}
+interface {{ interface_name }}
+ description {{ details.description }}
+ ip address {{ details.ip_address }} {{ details.subnet_mask }}
+ no shutdown
+{% endfor %}
+!
+{% if routing.ospf %}
+router ospf {{ routing.ospf.process_id }}
+{% for network in routing.ospf.networks %}
+ network {{ network.network }} {{ network.wildcard_mask }} area {{ network.area }}
+{% endfor %}
+{% endif %}
+!
+{% if security.ssh.enabled %}
+ip ssh version 2
+{% for user in security.ssh.users %}
+username {{ user.username }} privilege {{ user.privilege }} secret {{ user.password }}
+{% endfor %}
+{% endif %}
+!
+{% for acl in security.acl %}
+ip access-list extended {{ acl.name }}
+{% for rule in acl.rules %}
+ {{ rule.action }} {{ rule.protocol }} {{ rule.source }} any
+{% endfor %}
+{% endfor %}
+!
+end
+write memory
+'
+
+
+create configs
+curl -X 'GET' \
+  'http://localhost:8000/configs/' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiaGFnYXZhbiIsInJvbGVfaWQiOjEsInJvbGVfbmFtZSI6ImFkbWluIiwiZXhwIjoxNzQzMTAyMjMyfQ.V3F4l6eabmCzcPUXHUHezt4rTGqIxgKt67tBZ79ve28'

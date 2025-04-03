@@ -1,0 +1,61 @@
+Please find each value to be display and how to get that value  
+Templates value
+<div>
+    <p className="text-2xl text-neutral-800">48</p>
+    <p className="text-neutral-600">Templates</p>
+</div>
+
+Count of return value of below REST call
+curl -X 'GET' \
+  'http://localhost:8000/templates' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiaGFnYXZhbiIsInJvbGVfaWQiOjEsInJvbGVfbmFtZSI6ImFkbWluIiwiZXhwIjoxNzQzMzY3NTA5fQ.HGZgFCiDBsRDaWJXIiM-v1oMXgnlFfnbJt4crIALQPw'
+
+Config Values
+<div>
+    <p className="text-2xl text-neutral-800">892</p>
+    <p className="text-neutral-600">Config Values</p>
+</div>
+
+Count of return value of below REST call
+curl -X 'GET' \
+  'http://localhost:8000/config_values/' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiaGFnYXZhbiIsInJvbGVfaWQiOjEsInJvbGVfbmFtZSI6ImFkbWluIiwiZXhwIjoxNzQzMzY3NTA5fQ.HGZgFCiDBsRDaWJXIiM-v1oMXgnlFfnbJt4crIALQPw'
+  
+Devices
+<div>
+    <p className="text-2xl text-neutral-800">156</p>
+    <p className="text-neutral-600">Devices</p>
+</div>
+
+Count of return value of below REST call
+curl -X 'GET' \
+  'http://localhost:8000/devices/' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiaGFnYXZhbiIsInJvbGVfaWQiOjEsInJvbGVfbmFtZSI6ImFkbWluIiwiZXhwIjoxNzQzMzY3NTA5fQ.HGZgFCiDBsRDaWJXIiM-v1oMXgnlFfnbJt4crIALQPw'
+  
+Customers
+<div>
+    <p className="text-2xl text-neutral-800">125</p>
+    <p className="text-neutral-600">Customers</p>
+</div>
+
+Count of return value of below REST call
+curl -X 'GET' \
+  'http://localhost:8000/customers/' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiaGFnYXZhbiIsInJvbGVfaWQiOjEsInJvbGVfbmFtZSI6ImFkbWluIiwiZXhwIjoxNzQzMzY3NTA5fQ.HGZgFCiDBsRDaWJXIiM-v1oMXgnlFfnbJt4crIALQPw'
+
+Users
+<div>
+    <p className="text-2xl text-neutral-800">32</p>
+    <p className="text-neutral-600">Users</p>
+</div>
+
+Count of return value of below REST call
+curl -X 'GET' \
+  'http://localhost:8000/list_users' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiaGFnYXZhbiIsInJvbGVfaWQiOjEsInJvbGVfbmFtZSI6ImFkbWluIiwiZXhwIjoxNzQzMzY3NTA5fQ.HGZgFCiDBsRDaWJXIiM-v1oMXgnlFfnbJt4crIALQPw'
+  
