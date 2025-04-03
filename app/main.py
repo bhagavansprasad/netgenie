@@ -1,5 +1,5 @@
-from fastapi import FastAPI, Depends, Security
-from fastapi.security import OAuth2PasswordBearer, SecurityScopes
+from fastapi import FastAPI, Depends
+from fastapi.middleware.cors import CORSMiddleware
 import logging
 from app.routers import config_router
 from app import logging_config
@@ -21,14 +21,8 @@ from app.core.security import get_current_user
 logging_config.configure_logging()
 logger = logging.getLogger(__name__)
 
-app = FastAPI(dependencies=[Depends(get_current_user)]) #Add the dependencies to every endpoints
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """
-    Lifespan event handler for FastAPI to manage startup and shutdown tasks.
-    """
     logger.info("Starting up...")
     db = await get_database()
     await initialize_permissions.on_startup_db_initialize_permissions()
@@ -37,9 +31,20 @@ async def lifespan(app: FastAPI):
     logger.info("Startup tasks completed.")
     yield
     logger.info("Shutting down...")
-    
+
 app = FastAPI(lifespan=lifespan)
 
+# ✅ Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow frontend
+    # allow_origins=["http://localhost:5173"],  # Allow frontend
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP methods
+    allow_headers=["*"],  # Allow all headers
+)
+
+# Include API routers
 app.include_router(auth_router.router, prefix="", tags=["Authentication"])
 app.include_router(customers_router.router, prefix="", tags=["Customers"])
 app.include_router(devices_router.router, prefix="", tags=["Devices"])
