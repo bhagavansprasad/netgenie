@@ -1,0 +1,31 @@
+I am working on LoginPage.jsx and LoginPage.css
+I need to change below code for below reasons
+
+1. This is a login page.  On successful login, backend returns token which required to save it on frontend.  The same token is passed to backend for every subsequent requests that UI is making.  Please impliment a function which can be used to get the toke for any request going from UI
+
+2. Also Help me is storing server details in a environment file which can be used by different jsx files. I don't want it to be a static value in  every page
+
+3. Help me in maintaining css file separately
+
+4. Curl request and response for login page is like below
+    Request
+    curl -X 'POST' \
+      'http://localhost:8000/auth/login' \
+      -H 'accept: application/json' \
+      -H 'Content-Type: application/x-www-form-urlencoded' \
+      -d 'grant_type=password&username=bhagavan&password=jnjnuh&scope=&client_id=string&client_secret=string'
+
+    Response
+    {
+      "username": "bhagavan",
+      "email": "bhagavan@example.com",
+      "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiaGFnYXZhbiIsInJvbGVfaWQiOjEsInJvbGVfbmFtZSI6ImFkbWluIiwiZXhwIjoxNzQzMTYxODEwfQ.qH0tgbN7rPr619dMnVeAir2TsjFMTw6w0MGFeLp7SZI",
+      "token_type": "bearer",
+      "role": {
+        "id": 1,
+        "name": "admin"
+      }
+    }
+
+
+

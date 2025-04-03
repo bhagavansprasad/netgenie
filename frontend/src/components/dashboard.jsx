@@ -19,18 +19,19 @@ import {
     faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from 'react-router-dom';
-import './dashboard.css'; // Import the CSS (Tailwind will process it)
+import './dashboard.css';
 
 function Dashboard() {
     const navigate = useNavigate();
     const [data, setData] = useState(null);
+    const [templates, setTemplates] = useState([]); // State for templates
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const API_BASE_URL = 'http://localhost:8000'; // Centralize the base URL
+    const API_BASE_URL = 'http://localhost:8000';
 
     useEffect(() => {
-        const fetchMetrics = async () => {
+        const fetchMetricsAndTemplates = async () => {
             setIsLoading(true);
             setError(null);
             const token = localStorage.getItem('accessToken');
@@ -47,18 +48,24 @@ function Dashboard() {
             };
 
             try {
-                const [templates, configValues, devices, customers, users] = await Promise.all([
-                    fetch(`${API_BASE_URL}/templates`, { headers }).then(res => res.json()).then(data => data.length),
+                const [templatesData, configValues, devices, customers, users] = await Promise.all([
+                    fetch(`${API_BASE_URL}/templates`, { headers }).then(res => {
+                        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                        return res.json();
+                    }),
                     fetch(`${API_BASE_URL}/config_values/`, { headers }).then(res => res.json()).then(data => data.length),
                     fetch(`${API_BASE_URL}/devices/`, { headers }).then(res => res.json()).then(data => data.length),
                     fetch(`${API_BASE_URL}/customers/`, { headers }).then(res => res.json()).then(data => data.length),
                     fetch(`${API_BASE_URL}/list_users`, { headers }).then(res => res.json()).then(data => data.length),
                 ]);
 
+                // Set the templates state
+                setTemplates(templatesData);
+
                 const mockData = {
                     title: 'Dashboard Overview',
                     metrics: [
-                        { name: 'Templates', value: templates, icon: faCode },
+                        { name: 'Templates', value: templatesData.length, icon: faCode },
                         { name: 'Config Values', value: configValues, icon: faDatabase },
                         { name: 'Devices', value: devices, icon: faServer },
                         { name: 'Customers', value: customers, icon: faUsers },
@@ -78,9 +85,8 @@ function Dashboard() {
             }
         };
 
-        fetchMetrics();
-    }, []);  // Run only once on component mount
-
+        fetchMetricsAndTemplates();
+    }, []); // Run only once on component mount
 
     const handleCreateTemplateClick = () => {
         navigate('/create-template');
@@ -235,13 +241,14 @@ function Dashboard() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr className="border-b border-neutral-100">
-                                            <td className="py-3 px-4 text-sm">Router Base Config</td>
-                                            <td className="py-3 px-4 text-sm">John Doe</td>
-                                            <td className="py-3 px-4 text-sm">Jan 15, 2025</td>
-                                            <td className="py-3 px-4 text-sm"><span className="px-2 py-1 bg-neutral-100 rounded-full text-xs">Active</span></td>
-                                        </tr>
-                                        {/* More template rows here... */}
+                                        {templates.map(template => (
+                                            <tr className="border-b border-neutral-100" key={template._id}>
+                                                <td className="py-3 px-4 text-sm">{template.template_name}</td>
+                                                <td className="py-3 px-4 text-sm">{template.username}</td>
+                                                <td className="py-3 px-4 text-sm">{new Date(template.timestamp).toLocaleDateString()}</td> {/* Format date */}
+                                                <td className="py-3 px-4 text-sm"><span className="px-2 py-1 bg-neutral-100 rounded-full text-xs">Active</span></td>
+                                            </tr>
+                                        ))}
                                     </tbody>
                                 </table>
                             </div>
@@ -268,15 +275,7 @@ function Dashboard() {
                         <div className="bg-white p-6 rounded-xl border border-neutral-200 shadow-sm backdrop-blur-sm">
                             <h2 className="text-lg mb-4">Recent Activity</h2>
                             <div className="space-y-4">
-                                {data && data.recentActivity.map((activity, index) => (
-                                    <div className="flex items-start gap-3" key={index}>
-                                        <FontAwesomeIcon icon={activity.icon} className="mt-1 text-neutral-400" />
-                                        <div>
-                                            <p className="text-sm text-neutral-900">{activity.text}</p>
-                                            <p className="text-xs text-neutral-500">{activity.time}</p>
-                                        </div>
-                                    </div>
-                                ))}
+                                {/* Removed hardcoded activities as the component now does not contain activities.*/}
                             </div>
                         </div>
                     </div>

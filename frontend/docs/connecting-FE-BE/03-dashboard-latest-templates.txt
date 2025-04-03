@@ -1,0 +1,31 @@
+I am working on dashboard.jsx and dashboard.css
+Can you help me maintaining css file separately from css file?
+
+1. In dashboard.jsx I wanted to populate "{/* Latest Templates */}
+    The values to be listed from below endpoint call
+    curl -X 'GET' \
+    'http://localhost:8000/templates' \
+    -H 'accept: application/json' \
+    -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiaGFnYXZhbiIsInJvbGVfaWQiOjEsInJvbGVfbmFtZSI6ImFkbWluIiwiZXhwIjoxNzQzMzY3NTA5fQ.HGZgFCiDBsRDaWJXIiM-v1oMXgnlFfnbJt4crIALQPw'
+
+    The reponse in JSON object
+    [
+        {
+            "_id": "67e66b1fdc8bac69f3368fdf",
+            "template_name": "cisco_router_template",
+            "username": "bhagavan",
+            "timestamp": "2025-03-28T09:25:51.345000",
+            "device_name": "N/A"
+        }
+    ]
+
+Table colums and Values mapping
+    Template Name : <template_name>
+    Created By : <username>
+    Created Date : <timestamp>
+    Status : "Active"
+
+2. The token value is the value which is shared at the time of login.  Please refer loginPage.jsx
+    Note: Token is not a static value
+
+
