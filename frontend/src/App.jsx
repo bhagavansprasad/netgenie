@@ -3,13 +3,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import LoginPage from './components/LoginPage';
-import Dashboard from './components/dasboard';
+import Dashboard from './components/dashboard';
 import CreateTemplate from './components/CreateTemplate';
 import ConfigurationPage from './components/ConfigurationPage';
 import CreateDevicePage from './components/CreateDevicePage';
 import CreateCustomerPage from './components/CreateCustomerPage';
 import GenerateConfigurationsPage from './components/GenerateConfigurationsPage';
-import './App.css'; // You can add global styles here if you want
+import './App.css'; 
 
 function App() {
   return (

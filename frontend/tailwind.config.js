@@ -4,6 +4,7 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
     "./src/components/LoginPage.css", // Add this line
+    "./src/components/dashboard.jsx", // Add this line
   ],
   theme: {
     extend: {},

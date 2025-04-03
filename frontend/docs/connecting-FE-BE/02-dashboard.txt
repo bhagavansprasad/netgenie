@@ -1,4 +1,4 @@
-Please find each value to be display and how to get that value  
+Please find each value to be displayed and how to get that value  
 Templates value
 <div>
     <p className="text-2xl text-neutral-800">48</p>
