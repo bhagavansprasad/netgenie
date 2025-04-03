@@ -7,3 +7,5 @@ tailwind.config.js
 vite.config.js
 src/components/LoginPage.jsx
 src/components/LoginPage.css
+src/components/dashboard.css
+src/components/dashboard.jsx
