@@ -24,7 +24,7 @@ import './dashboard.css';
 function Dashboard() {
     const navigate = useNavigate();
     const [data, setData] = useState(null);
-    const [templates, setTemplates] = useState([]); // State for templates
+    const [templates, setTemplates] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -86,7 +86,7 @@ function Dashboard() {
         };
 
         fetchMetricsAndTemplates();
-    }, []); // Run only once on component mount
+    }, []);
 
     const handleCreateTemplateClick = () => {
         navigate('/create-template');
@@ -245,7 +245,7 @@ function Dashboard() {
                                             <tr className="border-b border-neutral-100" key={template._id}>
                                                 <td className="py-3 px-4 text-sm">{template.template_name}</td>
                                                 <td className="py-3 px-4 text-sm">{template.username}</td>
-                                                <td className="py-3 px-4 text-sm">{new Date(template.timestamp).toLocaleDateString()}</td> {/* Format date */}
+                                                <td className="py-3 px-4 text-sm">{new Date(template.timestamp).toLocaleDateString()}</td>
                                                 <td className="py-3 px-4 text-sm"><span className="px-2 py-1 bg-neutral-100 rounded-full text-xs">Active</span></td>
                                             </tr>
                                         ))}
@@ -275,7 +275,15 @@ function Dashboard() {
                         <div className="bg-white p-6 rounded-xl border border-neutral-200 shadow-sm backdrop-blur-sm">
                             <h2 className="text-lg mb-4">Recent Activity</h2>
                             <div className="space-y-4">
-                                {/* Removed hardcoded activities as the component now does not contain activities.*/}
+                                {data && data.recentActivity.map((activity, index) => (
+                                    <div className="flex items-start gap-3" key={index}>
+                                        <FontAwesomeIcon icon={activity.icon} className="mt-1 text-neutral-400" />
+                                        <div>
+                                            <p className="text-sm text-neutral-900">{activity.text}</p>
+                                            <p className="text-xs text-neutral-500">{activity.time}</p>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>
