@@ -1,0 +1,205 @@
+/* src/components/LoginPage.css */
+
+.login-container {
+    min-height: 100vh; /* Corrected property */
+    background-color: #f3f3f3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  
+  .login-wrapper {
+    width: 100%;
+    max-width: 640px; /* Adjust as needed */
+  }
+  
+  .login-logo-section {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .login-logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 1.5rem;
+    color: #1a1a1a;
+  }
+  
+  .login-logo {
+    font-size: 2rem; /* Adjust logo size */
+  }
+  
+  .login-tagline {
+    color: #5d5d5d;
+    margin-top: 0.5rem;
+  }
+  
+  .login-form-container {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    backdrop-filter: blur(5px);
+    background-color: rgba(255, 255, 255, 0.9); /*  More transparent background */
+  }
+  
+  .login-form-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* Spacing between form elements */
+  }
+  
+  .login-options {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  .login-option-button {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    background-color: #fdfdfd;
+    border: 1px solid #e5e5e5;
+    border-radius: 0.375rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: background-color 0.2s ease-in-out;
+    cursor: pointer; /* Indicate clickable */
+  }
+  
+  .login-option-button:hover {
+    background-color: #f5f5f5;
+  }
+  
+  .login-separator-container {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+  
+  .login-separator-line {
+    position: absolute;
+    inset: 0;
+    border-top: 1px solid #e5e5e5;
+  }
+  
+  .login-separator-text {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    font-size: 0.875rem;
+    padding: 0 0.5rem;
+    background-color: white;
+    color: #5d5d5d;
+  }
+  
+  .login-input-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .login-label {
+    display: block;
+    font-size: 0.875rem;
+    color: #1a1a1a;
+    margin-bottom: 0.25rem;
+  }
+  
+  .login-input {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    background-color: #fdfdfd;
+    border: 1px solid #e5e5e5;
+    border-radius: 0.375rem;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  }
+  
+  .login-input:focus {
+    outline: none;
+    border-color: #0067c0;
+    box-shadow: 0 0 0 2px rgba(0, 103, 192, 0.2);
+  }
+  
+  .login-remember-forgot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .login-remember {
+    display: flex;
+    align-items: center;
+  }
+  
+  .login-checkbox {
+    height: 1rem;
+    width: 1rem;
+    border: 1px solid #e5e5e5;
+    border-radius: 0.25rem;
+    accent-color: #0067c0;
+  }
+  
+  .login-remember-label {
+    margin-left: 0.5rem;
+    font-size: 0.875rem;
+    color: #5d5d5d;
+  }
+  
+  .login-forgot-button {
+    font-size: 0.875rem;
+    color: #0067c0;
+    transition: color 0.2s ease-in-out;
+    background: none; /* Remove background */
+    border: none; /* Remove border */
+    padding: 0; /* Remove padding */
+    cursor: pointer; /* Make it clear it's clickable */
+  }
+  
+  .login-forgot-button:hover {
+    color: #005aa7;
+    text-decoration: underline; /* Add underline */
+  }
+  
+  .login-button {
+    width: 100%;
+    background-color: #0067c0;
+    color: white;
+    padding: 0.75rem 0;
+    border-radius: 0.375rem;
+    transition: background-color 0.2s ease-in-out;
+    cursor: pointer;
+    border: none; /* Remove implicit border */
+  }
+  
+  .login-button:hover {
+    background-color: #005aa7;
+  }
+  
+  .login-admin-registration {
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+  
+  .login-admin-text {
+    font-size: 0.875rem;
+    color: #5d5d5d;
+  }
+  
+  .login-admin-button {
+    font-size: 0.875rem;
+    color: #0067c0;
+    transition: color 0.2s ease-in-out;
+    text-decoration: none; /* Remove underline */
+    background: none; /* Remove background */
+    border: none; /* Remove border */
+    padding: 0; /* Remove padding */
+    cursor: pointer;
+  }
+  
+  .login-admin-button:hover {
+    color: #005aa7;
+    text-decoration: underline;
+  }

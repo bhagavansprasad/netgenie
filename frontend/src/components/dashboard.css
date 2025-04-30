@@ -1,0 +1,13 @@
+/* src/components/dashboard.css */
+
+/* Any styles that can't be easily handled with Tailwind classes go here. */
+
+/* Example of custom styles (adjust as needed) */
+.dashboard-container {
+  font-family: 'Inter', sans-serif; /* Or your preferred font */
+}
+
+/* Add specific styles for table headers, if needed */
+.dashboard-table-header {
+    font-weight: 600;
+}

@@ -1,0 +1,34 @@
+{
+    "ABC_Corp": {
+        "devices": [
+            {
+                "device_name": "Core_Router",
+                "device_type": "router",
+                "config_file": "configs/ABC_Corp/core_router_config.json",
+                "template": "templates/cisco_router_template.j2"
+            },
+            {
+                "device_name": "Access_Switch",
+                "device_type": "switch",
+                "config_file": "configs/ABC_Corp/access_switch_config.json",
+                "template": "templates/cisco_switch_template.j2"
+            }
+        ]
+    },
+    "XYZ_Tech": {
+        "devices": [
+            {
+                "device_name": "Branch_Office_Router",
+                "device_type": "router",
+                "config_file": "configs/XYZ_Tech/branch_router_config.json",
+                "template": "templates/cisco_router_template.j2"
+            },
+            {
+                "device_name": "Distribution_Switch",
+                "device_type": "switch",
+                "config_file": "configs/XYZ_Tech/distribution_switch_config.json",
+                "template": "templates/cisco_switch_template.j2"
+            }
+        ]
+    }
+}

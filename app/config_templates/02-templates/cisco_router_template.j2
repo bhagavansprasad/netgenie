@@ -1,0 +1,17 @@
+hostname {{ hostname }}
+!
+interface {{ interface_name }}
+ description {{ description }}
+ ip address {{ ipv4_address }} {{ subnet_mask }}
+ no shutdown
+!
+{% if ipv6_address %}
+ ipv6 address {{ ipv6_address }}
+{% endif %}
+!
+{% if ospf_enabled %}
+ ip ospf {{ ospf_process_id }} area {{ ospf_area }}
+{% endif %}
+!
+end
+write memory

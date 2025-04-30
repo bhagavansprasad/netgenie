@@ -1,0 +1,11 @@
+{
+    "hostname": "Branch_Office_Router",
+    "interface_name": "GigabitEthernet0/1",
+    "description": "WAN Link to HQ",
+    "ipv4_address": "192.168.50.1",
+    "subnet_mask": "255.255.255.0",
+    "ipv6_address": "2001:db8:50::1/64",
+    "ospf_enabled": true,
+    "ospf_process_id": 2,
+    "ospf_area": 0
+}

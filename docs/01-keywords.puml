@@ -1,0 +1,30 @@
+@startuml
+object Network {
+    Routers
+    Switches
+}
+
+object Configuration {
+    Jinja2_Templates
+    Config_Values_JSON
+    Template_Groups
+}
+
+object Devices_Inventory
+object Customers
+
+Network -- Devices_Inventory
+Devices_Inventory -- Routers
+Devices_Inventory -- Switches
+
+Network -- Configuration
+Configuration -- Jinja2_Templates
+Configuration -- Config_Values_JSON
+Configuration -- Template_Groups
+
+Template_Groups -- Jinja2_Templates
+Jinja2_Templates -- Config_Values_JSON
+
+Customers -- Devices_Inventory
+Customers -- Configuration
+@enduml

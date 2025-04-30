@@ -3,3 +3,11 @@ uvicorn
 pydantic
 google-cloud-aiplatform
 jinja2
+pymongo
+pydantic[email]
+bcrypt
+typer
+motor
+python-jose
+python-multipart
+requests

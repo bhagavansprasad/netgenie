@@ -1,0 +1,7 @@
+{
+    "hostname": "Distribution_Switch",
+    "vlan_id": 100,
+    "vlan_name": "Corp_Network",
+    "interface_name": "GigabitEthernet0/24",
+    "description": "Uplink to Core Switch"
+}

@@ -1,0 +1,32 @@
+hostname {{ hostname }}
+!
+{% for interface_name, details in interfaces.items() %}
+interface {{ interface_name }}
+ description {{ details.description }}
+ ip address {{ details.ip_address }} {{ details.subnet_mask }}
+ no shutdown
+{% endfor %}
+!
+{% if routing.ospf %}
+router ospf {{ routing.ospf.process_id }}
+{% for network in routing.ospf.networks %}
+ network {{ network.network }} {{ network.wildcard_mask }} area {{ network.area }}
+{% endfor %}
+{% endif %}
+!
+{% if security.ssh.enabled %}
+ip ssh version 2
+{% for user in security.ssh.users %}
+username {{ user.username }} privilege {{ user.privilege }} secret {{ user.password }}
+{% endfor %}
+{% endif %}
+!
+{% for acl in security.acl %}
+ip access-list extended {{ acl.name }}
+{% for rule in acl.rules %}
+ {{ rule.action }} {{ rule.protocol }} {{ rule.source }} any
+{% endfor %}
+{% endfor %}
+!
+end
+write memory

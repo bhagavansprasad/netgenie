@@ -1,0 +1,4 @@
+{
+    "router": "templates/cisco_router_template.j2",
+    "switch": "templates/cisco_switch_template.j2"
+}
